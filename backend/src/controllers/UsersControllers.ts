@@ -1,6 +1,8 @@
 import {Request, Response} from 'express'
+import bcrypt from 'bcrypt'
 import db from '../database/connection'
 import HourToMinutes from '../utils/HourToMinutes'
+
 
 
 interface scheduleItem{
@@ -10,7 +12,8 @@ interface scheduleItem{
 }
 
 export default {
-    async create(req:Request,res:Response){
+
+    /* async create(req:Request,res:Response){
         const {
             name,
             avatar,
@@ -61,7 +64,7 @@ export default {
         }
         
 
-    },
+    }, */
     async index(req:Request, res:Response){
         const filters = req.query
 
@@ -87,5 +90,86 @@ export default {
             .select(['classes.*', 'users.*'])
 
         return res.json(classes)
+    },
+
+    async create(req: Request, res:Response){
+        const {email, password } = req.body
+        const name = `${req.body.name} ${req.body.lastName}`
+
+        try{
+            const user = await db('users').where({email}).select('email')
+            if (user.length >0){
+                return res.json({message:'Email already in use'})
+            }    
+
+        }catch(err){
+            return res.json({message:err.message})
+        }
+        const passwordHash = await bcrypt.hash(password, 8)
+
+        
+        try{    
+            await db('users').insert({
+                name,
+                email,
+                password:passwordHash
+            })
+
+        }catch(err){
+            return res.json({message:err.message})
+        }
+
+        return res.status(201).send()
+    },
+
+    async show(req: Request, res:Response){
+        const id = req.user
+
+
+
+        const user = await db('users').where({id})
+
+        const {name:nameFull} = user[0]
+        const [name,lastName] = nameFull.split(' ')
+
+        user[0].password = undefined
+        user[0].name = name
+        user[0].lastName = lastName
+         
+        return res.json({user})
+    },
+    async update(req: Request, res: Response){
+        const id = req.user
+        const {bio,whatsapp,avatar,email} = req.body
+        const name = `${req.body.name} ${req.body.lastName}`
+        
+
+        try{
+            const user = await db('users').where({email}).select('email','id')
+            if (user.length > 0){
+                if(user[0].id != id){
+                    
+                    return res.json({message:'Email already in use'})
+                }
+            }    
+
+        }catch(err){
+            return res.json({message:err.message})
+        }
+
+
+        try{
+            await db('users').where({id}).update({
+                name,
+                bio,
+                whatsapp,
+                avatar,
+                email
+            })
+        }catch(err){
+            return res.json({message:err.message})
+        }
+
+        return res.status(201).send()
     }
 }
