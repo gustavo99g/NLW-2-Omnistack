@@ -3,7 +3,7 @@
 # dependencies
 /node_modules
 /backend/src/database/database.sqlite
-
+*.sqlite
 
 *.sqlite
 # testing
