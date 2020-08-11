@@ -11,7 +11,11 @@ export default {
         const {email, password} = req.body
 
         try{
+            
             const user = await db('users').where({email})
+            if(user.length ===0){
+                return res.json({message:'Email or password invalid'})
+            }
             const login = await bcrypt.compare(password,user[0].password)
             if(login){
                 const token = jwt.sign({id:user[0].id},"secret")

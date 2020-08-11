@@ -16,34 +16,57 @@ export default {
     
     async index(req:Request, res:Response){
         const filters = req.query
-
-        if(!filters.week_day || !filters.subject || !filters.time){
-            return res.status(400).json({
-                error:'Missing filters to search classes'
-            })
-        }
-        const timeInMinutes = HourToMinutes(filters.time as string)
-
-        const classes = await db('classes')
-            .whereExists(function(){
-                this.select('class_schedule.*')
+       
+      
+        
+        let query = db('classes')
+                   
+            if(filters.week_day){
+                query.whereExists(function(){
+                    this.select('class_schedule.*')
                     .from('class_schedule')
                     .whereRaw('`class_schedule`.`class_id`=`classes`.`id`')
                     .whereRaw('`class_schedule`.`week_day`=??', [Number(filters.week_day as string)])
-                    .whereRaw('`class_schedule`.`from` <= ??', [timeInMinutes])
-                    .whereRaw('`class_schedule`.`to` > ??', [timeInMinutes])
-
-            })
-            .where('classes.subject', '=', filters.subject as string)
-            .join('users', 'classes.user_id', '=' ,'users.id')
-            .join('class_schedule', 'classes.id', 'class_schedule.class_id')
-            .select(['classes.*','class_schedule.*', 'users.name','users.bio', 'users.whatsapp', 'users.avatar', 'users.email'])
-           
-          
-            console.log(classes)
+                })
+            }
+                if(filters.time){
+                    const timeInMinutes = HourToMinutes(filters.time as string)
+                    console.log(timeInMinutes)
+                    query.whereExists(function(){
+                        this.select('class_schedule.*')
+                        .from('class_schedule')
+                        .whereRaw('`class_schedule`.`class_id`=`classes`.`id`')
+                        .whereRaw('`class_schedule`.`from` <= ??', [timeInMinutes])
+                        .whereRaw('`class_schedule`.`to` > ??', [timeInMinutes])
+                }
+                )
+            }
             
+            
+            if (filters.subject){
+                query.where('classes.subject', '=', filters.subject as string)
+            }
+            query
+            .join('users', 'classes.user_id', '=' ,'users.id')      
+            .select(['classes.*', 'users.name','users.bio', 'users.whatsapp', 'users.avatar', 'users.email'])       
+            .distinct()
 
-        return res.json(classes)
+            const classes = await query
+           
+            const classes_schedule = classes.map(async classe =>{
+                const schedule = await db('class_schedule')
+                .where('class_schedule.class_id', classe.id)
+                .select(['class_schedule.to','class_schedule.from', 'class_schedule.week_day'])
+                return {
+                    class:classe,
+                    schedule
+                }            
+                
+            })
+           
+            const result = await Promise.all(classes_schedule)
+            
+        return res.json(result)
     },
 
     async create(req: Request, res:Response){
@@ -61,16 +84,24 @@ export default {
         }
         const passwordHash = await bcrypt.hash(password, 8)
 
-        
+        const trx =await db.transaction()
         try{    
-            await db('users').insert({
+            const user = await trx('users').insert({
                 name,
                 email,
                 password:passwordHash
             })
+            const user_id = user[0]
+
+            const classes =await trx('classes').insert({user_id})
+            const class_id = classes[0]
+            await trx('class_schedule').insert({class_id})
+            await trx.commit()
 
         }catch(err){
+            await trx.rollback()
             return res.json({message:err.message})
+            
         }
 
         return res.status(201).send()
@@ -78,19 +109,22 @@ export default {
 
     async show(req: Request, res:Response){
         const id = req.user
-
-
-
-        const user = await db('users').where({id})
-
+        const user = await db('users').where('users.id',id)
+        .join('classes', 'users.id','=','classes.user_id')
+         .select(['classes.subject', 'classes.id as classes_id','classes.cost','users.*'])
+        .distinct()
+        
+        const schedule = await db('class_schedule').where('class_id', user[0].classes_id)
         const {name:nameFull} = user[0]
         const [name,lastName] = nameFull.split(' ')
 
         user[0].password = undefined
+        user[0].resetToken = undefined
+        user[0].resetTokenExpires = undefined
         user[0].name = name
-        user[0].lastName = lastName
+        user[0].lastName = lastName 
          
-        return res.json({user})
+        return res.json({user,schedule})
     },
     async update(req: Request, res: Response){
         const id = req.user
@@ -113,19 +147,24 @@ export default {
 
 
         try{
-            await trx('users').where({id}).update({
+           await trx('users').where({id}).update({
                 name,
                 bio,
                 whatsapp,
                 avatar,
                 email
             })
-            const classes_id = await trx('classes').insert({
+
+           
+            
+            await trx('classes').where({user_id:id}).update({
                 subject,
                 cost,
                 user_id:id
             })
-            const class_id = classes_id[0]
+            const classes_id = await trx('classes').where({user_id:id})
+            
+            const class_id = classes_id[0].id   
     
             const clasSchedule = schedule.map((item:scheduleItem)=>{
                 return {
@@ -135,9 +174,13 @@ export default {
                     to:HourToMinutes(item.to)
                 }
             })
-            await trx('class_schedule').insert(clasSchedule)
 
+            
+            await trx('class_schedule').where({class_id}).delete()
+            await trx('class_schedule').insert(clasSchedule)
+            
             await trx.commit()
+           
 
         }catch(err){
             await trx.rollback()
