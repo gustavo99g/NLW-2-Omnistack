@@ -8,7 +8,7 @@ export default{
         const {proffy_id} = req.body
         const user_id = req.user
         const favorites = await db('favorites').where({user_id,proffy_id})
-            console.log(favorites)
+            
         if (favorites.length === 0){
             await db('favorites').insert({
                 user_id,

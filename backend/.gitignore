@@ -2,15 +2,12 @@
 
 # dependencies
 /node_modules
-/.pnp
-.pnp.js
+/backend/src/database/database.sqlite
 
-*.sqllite
+
+*.sqlite
 # testing
 /coverage
-
-# production
-/build
 
 # misc
 .DS_Store
