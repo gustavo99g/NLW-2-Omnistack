@@ -13,14 +13,10 @@ interface scheduleItem{
 
 export default {
 
-    
     async index(req:Request, res:Response){
         const filters = req.query
-       
-      
         
-        let query = db('classes')
-                   
+        let query = db('classes')       
             if(filters.week_day){
                 query.whereExists(function(){
                     this.select('class_schedule.*')
@@ -31,7 +27,6 @@ export default {
             }
                 if(filters.time){
                     const timeInMinutes = HourToMinutes(filters.time as string)
-                    console.log(timeInMinutes)
                     query.whereExists(function(){
                         this.select('class_schedule.*')
                         .from('class_schedule')
@@ -40,8 +35,7 @@ export default {
                         .whereRaw('`class_schedule`.`to` > ??', [timeInMinutes])
                 }
                 )
-            }
-            
+            }       
             
             if (filters.subject){
                 query.where('classes.subject', '=', filters.subject as string)
@@ -49,7 +43,8 @@ export default {
             query
             .join('users', 'classes.user_id', '=' ,'users.id')      
             .select(['classes.*', 'users.name','users.bio', 'users.whatsapp', 'users.avatar', 'users.email'])       
-            .distinct()
+            
+            
 
             const classes = await query
            

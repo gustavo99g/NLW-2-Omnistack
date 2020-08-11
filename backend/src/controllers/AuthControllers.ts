@@ -9,9 +9,7 @@ import db from '../database/connection'
 export default {
     async create(req: Request, res: Response){
         const {email, password} = req.body
-
-        try{
-            
+        try{          
             const user = await db('users').where({email})
             if(user.length ===0){
                 return res.json({message:'Email or password invalid'})

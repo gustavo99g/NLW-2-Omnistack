@@ -14,10 +14,11 @@ export default {
     },
     async index(req: Request, res:Response){
         const totalConnections = await db('connections').count('* as total')
+        const totalTeacher = await db('users').count('* as totalTeachers')
 
         const {total} = totalConnections[0]
 
-        return res.json({total})
+        return res.json({total,totalTeacher})
 
     }
 }
