@@ -13,58 +13,7 @@ interface scheduleItem{
 
 export default {
 
-    /* async create(req:Request,res:Response){
-        const {
-            name,
-            avatar,
-            subject,
-            bio,
-            whatsapp,
-            cost,
-            schedule
-
-        } = req.body
-
-        const trx =await db.transaction()
-
-        try{
-            const usersId = await trx('users').insert({
-                name,
-                avatar,
-                bio,
-                whatsapp
-            })
-            const user_id = usersId[0]
     
-            const classes_id = await trx('classes').insert({
-                subject,
-                cost,
-                user_id
-            })
-            const class_id = classes_id[0]
-    
-            const clasSchedule = schedule.map((item:scheduleItem)=>{
-                return {
-                    class_id,
-                    week_day: item.week_day,
-                    from: HourToMinutes(item.from),
-                    to:HourToMinutes(item.to)
-                }
-            })
-    
-            await trx('class_schedule').insert(clasSchedule)
-    
-            await trx.commit()
-    
-            res.status(201).json('')
-
-        }catch(err){
-            await trx.rollback()
-            return res.json({message:err.message})
-        }
-        
-
-    }, */
     async index(req:Request, res:Response){
         const filters = req.query
 
@@ -87,7 +36,12 @@ export default {
             })
             .where('classes.subject', '=', filters.subject as string)
             .join('users', 'classes.user_id', '=' ,'users.id')
-            .select(['classes.*', 'users.*'])
+            .join('class_schedule', 'classes.id', 'class_schedule.class_id')
+            .select(['classes.*','class_schedule.*', 'users.name','users.bio', 'users.whatsapp', 'users.avatar', 'users.email'])
+           
+          
+            console.log(classes)
+            
 
         return res.json(classes)
     },
@@ -140,12 +94,12 @@ export default {
     },
     async update(req: Request, res: Response){
         const id = req.user
-        const {bio,whatsapp,avatar,email} = req.body
+        const {bio,whatsapp,avatar,email,cost,schedule,subject} = req.body
         const name = `${req.body.name} ${req.body.lastName}`
         
-
+        const trx =await db.transaction()
         try{
-            const user = await db('users').where({email}).select('email','id')
+            const user = await trx('users').where({email}).select('email','id')
             if (user.length > 0){
                 if(user[0].id != id){
                     
@@ -159,15 +113,36 @@ export default {
 
 
         try{
-            await db('users').where({id}).update({
+            await trx('users').where({id}).update({
                 name,
                 bio,
                 whatsapp,
                 avatar,
                 email
             })
+            const classes_id = await trx('classes').insert({
+                subject,
+                cost,
+                user_id:id
+            })
+            const class_id = classes_id[0]
+    
+            const clasSchedule = schedule.map((item:scheduleItem)=>{
+                return {
+                    class_id,
+                    week_day: item.week_day,
+                    from: HourToMinutes(item.from),
+                    to:HourToMinutes(item.to)
+                }
+            })
+            await trx('class_schedule').insert(clasSchedule)
+
+            await trx.commit()
+
         }catch(err){
+            await trx.rollback()
             return res.json({message:err.message})
+            
         }
 
         return res.status(201).send()

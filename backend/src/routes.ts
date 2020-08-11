@@ -11,6 +11,7 @@ Routes.post('/users', UserController.create)
 Routes.post('/login', AuthControllers.create)
 Routes.get('/connections', ConnectionsController.index)
 Routes.post('/forgetPassword', AuthControllers.forgetPassword)
+Routes.post('/reset/:resetToken', AuthControllers.resetPassword)
 
 Routes.use(Auth)
 
