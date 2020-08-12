@@ -4,9 +4,11 @@ Projeto desenvolvido na Next level weekda rocketseat utilizando NodeJs, ReactJs 
 
 # Ainda em desenvolvimento
 -Backend terminado
+<br>
 -Frontend ainda em desenvolvimento
+<br>
 -Mobile ainda em desenvolvimento
 
-# Link para layout:
+# Link para layouts:
 <a href='https://www.figma.com/file/Agvethfp7FANyXDDU3LUfd/Proffy-Web-2.0'  target='_blank'>Web </a>
 <a href='https://www.figma.com/file/e33KvgUpFdunXxJjHnK7CG/Proffy-Mobile' target='_blank'> Mobile </a>
