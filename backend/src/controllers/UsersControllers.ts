@@ -121,6 +121,7 @@ export default {
          
         return res.json({user,schedule})
     },
+    
     async update(req: Request, res: Response){
         const id = req.user
         const {bio,whatsapp,avatar,email,cost,schedule,subject} = req.body

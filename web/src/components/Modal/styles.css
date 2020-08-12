@@ -1,0 +1,48 @@
+.modal{
+    width: 100vw;
+    height: 100vh;
+    background: url('../../assets/images/success-background.svg') var(--color-primary)  ;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+}
+
+.modal h1{
+    margin-top: 1.5rem;
+}
+.modal p{
+    font-size: 1.6rem;
+    color: #D4C2FF;
+   
+    max-width: 38rem;
+    margin: 2rem ;
+}
+
+.modal button{
+    height: 4.6rem;
+    width: 15rem;
+    background: var(--color-secundary);
+    border: 0;
+    padding: 1.5rem;
+    border-radius: 0.8rem;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+    margin-top: 3.2rem;
+}
+
+.modal button:hover{
+    background: var(--color-secundary-dark);
+}
+
+.modal a {
+    text-decoration: none;
+    color: var(--color-button-text);
+    font-size: 1.6rem;
+}

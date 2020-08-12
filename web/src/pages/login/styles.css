@@ -1,0 +1,46 @@
+
+
+.container .right form .info{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2.4rem;
+    color: #9C98A6;
+}
+.container .right form .form-block label{
+    margin-left: 1.2rem;
+    font-size: 1.4rem;
+}
+
+.container .right form .form-block input{
+
+    vertical-align: middle;
+}
+
+.container .right form .info a{
+    text-decoration: none;
+    color: #9C98A6;
+    font-size: 1.4rem;
+}
+
+.container .right form footer{
+    margin-top: 10.5rem;
+    display: flex;
+    justify-content: space-between;
+    
+}
+
+.container .right form footer span:nth-child(2){
+    color: var(--color-text-complement);
+}
+
+.container .right form footer a{
+    display: block;
+    color: var(--color-primary);
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+.container .right form footer span img{
+    vertical-align: middle;
+}
+

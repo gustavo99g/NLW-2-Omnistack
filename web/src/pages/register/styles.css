@@ -1,0 +1,11 @@
+.right a img{
+    align-self: flex-start;
+    position: absolute;
+    top: 2rem;
+}
+
+form p{
+    margin-top: 1.5rem;
+    max-width: 20rem;
+    color:#6A6180;
+}
