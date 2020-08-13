@@ -17,7 +17,13 @@ export default {
             const login = await bcrypt.compare(password,user[0].password)
             if(login){
                 const token = jwt.sign({id:user[0].id},"secret")
-                return res.json({token})
+                const userInfo = {
+                    name:user[0].name,
+                    email:user[0].email,
+                    avatar:user[0].avatar
+                }
+
+                return res.json({token,userInfo})
 
             }else{
                 return res.json({message:'Email or password invalid'})

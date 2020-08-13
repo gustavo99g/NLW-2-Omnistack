@@ -16,8 +16,8 @@ const Routes = () =>{
         <BrowserRouter>
          
             <Route path='/' exact component={Login}  />
-            <Route path='/study' component={TeacherList} />
-            <Route path='/give-classes' component={TeacherForm} />
+            <Route path='/study' component={TeacherList} isPrivate/>
+            <Route path='/give-classes' component={TeacherForm} isPrivate />
             <Route path='/register' component={Register} />
             <Route path='/forget' component={Forget} />
             <Route path='/reset/:resetToken' component={ChangePass} />

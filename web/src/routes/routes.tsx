@@ -8,7 +8,7 @@ interface routesProps extends RouteProps{
 
 const RouteWrapper:React.FC<routesProps> =({isPrivate=false,component:Component,...rest})=>{
     
-    const signed = true
+    const signed = false
 
     if (!signed && isPrivate){
         return <Redirect  to={"/"} />
