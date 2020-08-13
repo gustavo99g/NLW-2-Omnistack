@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import PageContainer from '../../components/PageContainer'
 import heart from '../../assets/images/icons/purple-heart.svg'
 import logo from '../../assets/images/logo.svg'
-import password from '../../assets/images/icons/password.svg'
-import showPasswordIcon from '../../assets/images/icons/showPassword.svg'
+
 import './styles.css'
-import { Link } from 'react-router-dom';
+import InputPassword from '../../components/InputPassword';
+
 
 const Login: React.FC = () => {
 
-    const [showPassword, setShowPassword] = useState(false)
+  
     
   return (
     <PageContainer>
@@ -26,14 +27,8 @@ const Login: React.FC = () => {
                         <span>E-mail</span>
                         <input type="email"  />
                     </div>
-                    <div>
-                        <span>Senha</span>
-                        <input type={showPassword ? 'text' :'password'} /> 
-                        <button onClick={()=>setShowPassword(!showPassword)} >
-                            {!showPassword ? <img src={password} alt="paswword"/>
-                            :<img src={showPasswordIcon} alt="paswword"/>}
-                        </button>
-                    </div>                 
+                    <InputPassword label='Senha' />
+                                     
                 </div>
                 <div className="info">
                     <div className="form-block">

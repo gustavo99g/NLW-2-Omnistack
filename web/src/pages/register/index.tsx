@@ -6,16 +6,14 @@ import PageContainer from '../../components/PageContainer'
 
 import logo from '../../assets/images/logo.svg'
 import backIcon from '../../assets/images/icons/back.svg'
-import password from '../../assets/images/icons/password.svg'
-import showPasswordIcon from '../../assets/images/icons/showPassword.svg'
 import './styles.css'
+import InputPassword from '../../components/InputPassword';
 
 
 const Register: React.FC = () => {
 
  
     const [modal,setModal] = useState(false)
-    const [showPassword, setShowPassword] = useState(false)
 
     if (modal){
         return <Modal title='Cadastro concluido' desc='Agora você faz parte da plataforma da Proffy. Tenha uma ótima experiência.' button='Fazer Login' />
@@ -42,15 +40,7 @@ const Register: React.FC = () => {
                         <span>E-mail</span>
                         <input type="email"/>
                     </div>
-                    <div>
-                         <span>Senha</span>
-                        <input type={showPassword ? 'text' :'password'} /> 
-                        <button onClick={()=>setShowPassword(!showPassword)} >
-                            {!showPassword ? <img src={password} alt="paswword"/>
-                            :<img src={showPasswordIcon} alt="paswword"/>}
-                        </button>
-                        
-                    </div>
+                    <InputPassword label='Senha' />
                     
                 </div>
                 <button className='button' onClick={()=>setModal(true)} >Concluir cadastro</button>
