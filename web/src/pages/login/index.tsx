@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PageContainer from '../../components/PageContainer'
 import heart from '../../assets/images/icons/purple-heart.svg'
 import logo from '../../assets/images/logo.svg'
-
+import password from '../../assets/images/icons/password.svg'
+import showPasswordIcon from '../../assets/images/icons/showPassword.svg'
 import './styles.css'
 import { Link } from 'react-router-dom';
 
 const Login: React.FC = () => {
+
+    const [showPassword, setShowPassword] = useState(false)
+    
   return (
     <PageContainer>
         <div className="left">
@@ -14,26 +18,35 @@ const Login: React.FC = () => {
             <h1>Sua plaforma de estudos online.</h1>
         </div>
         <div className="right">
-            <form>
+            <form onSubmit={(e)=>{e.preventDefault()}} >
                 
                 <h1>Fazer Login</h1>
                 <div className="input-container">
-                    <input type="email" placeholder='E-mail'  />
-                    <input type="password" placeholder='Senha'/>
-                    
+                    <div>
+                        <span>E-mail</span>
+                        <input type="email"  />
+                    </div>
+                    <div>
+                        <span>Senha</span>
+                        <input type={showPassword ? 'text' :'password'} /> 
+                        <button onClick={()=>setShowPassword(!showPassword)} >
+                            {!showPassword ? <img src={password} alt="paswword"/>
+                            :<img src={showPasswordIcon} alt="paswword"/>}
+                        </button>
+                    </div>                 
                 </div>
                 <div className="info">
                     <div className="form-block">
-                        <input type="checkbox" name="reminder" id="reminder"/>
-                            
-                        
-                        <label htmlFor="reminder">Lembrar-me</label>
+                    <label className="label">Lembrar-me
+                        <input type="checkbox"/>
+                        <span className="checkmark"></span>
+                    </label>
                     </div>                    
                     <Link to="/forget">Esqueci minha senha</Link>
 
                 </div>
                 
-                <button>Entrar</button>
+                <button className='button'>Entrar</button>
                 
                 <footer>
                     <span>

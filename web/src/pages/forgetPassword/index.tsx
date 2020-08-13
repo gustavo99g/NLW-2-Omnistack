@@ -34,7 +34,7 @@ const Forget: React.FC = () => {
                 <Input label='Email' name='Email' />
                     
                 
-                <button onClick={()=>setModal(true)} >Enviar</button>
+                <button className='button' onClick={()=>setModal(true)} >Enviar</button>
             </form>
             
         </div>

@@ -7,14 +7,61 @@
     color: #9C98A6;
 }
 .container .right form .form-block label{
-    margin-left: 1.2rem;
+    margin-left: 2.8rem;
     font-size: 1.4rem;
 }
-
-.container .right form .form-block input{
-
-    vertical-align: middle;
+.container .right form .form-block {
+    position: relative;
 }
+
+.container .right form .form-block  input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+  
+
+  .checkmark {
+    position: absolute;
+    top: -0.2rem;
+    left: 0;
+    height: 2.5rem;
+    width: 2.5rem;
+    background-color: #fff;
+    border-radius: 0.8rem;
+    
+  }
+
+  .label:hover input ~ .checkmark {
+    cursor: pointer;
+  }
+  
+
+  .label input:checked ~ .checkmark {
+    background-color: #04D361;
+  }
+
+  .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 0.9rem;
+    top: 0.5rem;
+    width: 0.5rem;
+    height: 1rem;
+    border: solid white;
+    border-width: 0 0.2rem 0.2rem 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+
+  .label input:checked ~ .checkmark:after {
+    display: block;
+  }
+  
 
 .container .right form .info a{
     text-decoration: none;

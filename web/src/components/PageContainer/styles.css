@@ -37,23 +37,70 @@
     flex-direction: column;
 }
 
-.container .right form .input-container input{
+.container .right form .input-container div{
     border: 0;
     background: #FAFAFC;
     border: 1px solid #E6E6F0;
-    height: 5.1rem;
-    padding: 0 1.5rem;
+    position: relative;
     font-size: 1.6rem;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
     outline: none;
 }
-.container .right form .input-container input:first-child{
+
+.container .right form .input-container div span{
+    color: #9C98A6;
+    font-size: 1.2rem;
+}
+
+
+.container .right form .input-container input{
+    background: #FAFAFC;
+    padding-top: 0.5rem;
+    border: 0;
+    outline: none;
+
+}
+.container .right form .input-container input::-ms-reveal{
+    display: none;
+}
+.container .right form .input-container button{
+    position: absolute;
+    right: 1.5rem;
+    top: 2.5rem;
+    
+    border: 0;
+    background: transparent;
+    outline: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container .right form .input-container button:hover{
+    cursor: pointer;
+}
+
+.container .right form .input-container div:focus-within::after{
+    width: 1px;
+    height: calc(100% -2.6rem);
+    content: '';
+    background:  var(--color-primary-light);
+    position: absolute;
+    left: 0;
+    top: 1.3rem;
+    bottom: 1.3rem;
+}
+
+.container .right form .input-container div:first-child{
     border-radius: 0.8rem 0.8rem 0 0;
 }
-.container .right form .input-container input:last-child{
+.container .right form .input-container div:last-child{
     border-radius: 0 0 0.8rem 0.8rem;
 }
 
-.container .right form button{
+.container .right form .button{
     height: 4.6rem;
     background: var(--color-secundary);
     color: var(--color-button-text);
@@ -69,7 +116,7 @@
     margin-top: 3.2rem;
 }
 
-.container .right form button:hover{
+.container .right form .button:hover{
     background: var(--color-secundary-dark);
 }
 
@@ -90,8 +137,8 @@
         justify-content: center;
         flex-direction: column;
         background-image: url('../../assets/images/success-background.svg');
-        background-size:contain;
-        background-repeat: no-repeat;
+        background-size:cover ;
+        
     }
     
     .container .left h1{
