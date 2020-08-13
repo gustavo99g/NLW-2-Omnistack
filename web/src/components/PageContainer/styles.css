@@ -1,11 +1,13 @@
 .container{
     width: 100vw;
     height: 100vh;
+    
 }
 .container .left{
     opacity: 0;
     display: none;
     visibility: hidden;
+    padding: 0 1.5rem;
 }
 .container .right{
     background-color: #F0F0F7;
@@ -121,7 +123,7 @@
 }
 
 
-@media (min-width:700px){
+@media (min-width:800px){
     .container{
         display: grid;
         grid-template-columns: 1fr 1fr;

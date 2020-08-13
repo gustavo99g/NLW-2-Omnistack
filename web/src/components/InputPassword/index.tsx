@@ -18,7 +18,7 @@ const InputPassword: React.FC<inputProps> = ({label, ...rest}) => {
         <div>
             <span>{label}</span>
             <input type={showPassword ? 'text' :'password'} {...rest} /> 
-            <button onClick={()=>setShowPassword(!showPassword)} >
+            <button type='button' onClick={()=>setShowPassword(!showPassword)} >
                 {!showPassword ? <img src={password} alt="paswword"/>
                 :<img src={showPasswordIcon} alt="paswword"/>}
             </button>

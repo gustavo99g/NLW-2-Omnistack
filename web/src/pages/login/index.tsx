@@ -1,16 +1,24 @@
-import React from 'react';
+import React,{useContext, FormEvent, useState} from 'react';
 import { Link } from 'react-router-dom';
 import PageContainer from '../../components/PageContainer'
 import heart from '../../assets/images/icons/purple-heart.svg'
 import logo from '../../assets/images/logo.svg'
 
-import './styles.css'
 import InputPassword from '../../components/InputPassword';
-
+import AuthContext from '../../contexts/auth'
+import './styles.css'
 
 const Login: React.FC = () => {
 
-  
+    const {signIn} = useContext(AuthContext)
+    const [email,setEmail] = useState('') 
+    const [password, setPassword] = useState('')
+
+    const handleSign =(e:FormEvent) =>{
+        e.preventDefault()
+     
+        signIn(email,password)
+    }
     
   return (
     <PageContainer>
@@ -19,15 +27,15 @@ const Login: React.FC = () => {
             <h1>Sua plaforma de estudos online.</h1>
         </div>
         <div className="right">
-            <form onSubmit={(e)=>{e.preventDefault()}} >
+            <form onSubmit={handleSign} >
                 
                 <h1>Fazer Login</h1>
                 <div className="input-container">
                     <div>
                         <span>E-mail</span>
-                        <input type="email"  />
+                        <input type="email" required onChange={e=>setEmail(e.target.value)} />
                     </div>
-                    <InputPassword label='Senha' />
+                    <InputPassword label='Senha' required onChange={e=>setPassword(e.target.value)} />
                                      
                 </div>
                 <div className="info">

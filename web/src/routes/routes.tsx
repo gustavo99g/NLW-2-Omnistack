@@ -1,5 +1,6 @@
-import React from 'react'
+import React,{useContext} from 'react'
 import {Route, Redirect,RouteProps, RouteComponentProps} from 'react-router-dom'
+import AuthContext from '../contexts/auth'
 
 interface routesProps extends RouteProps{
     isPrivate?:boolean
@@ -8,7 +9,7 @@ interface routesProps extends RouteProps{
 
 const RouteWrapper:React.FC<routesProps> =({isPrivate=false,component:Component,...rest})=>{
     
-    const signed = false
+    const {signed} = useContext(AuthContext)
 
     if (!signed && isPrivate){
         return <Redirect  to={"/"} />
@@ -17,8 +18,6 @@ const RouteWrapper:React.FC<routesProps> =({isPrivate=false,component:Component,
     if (signed && !isPrivate){
         return <Redirect to="/home" />
     }
-
-
     return (
         <Route {...rest} render={props =>(
             
