@@ -4,15 +4,21 @@ import api from '../services/api'
 
 interface AuthContextProps{
     signed:boolean
-    user:object | null
+    user:userProps | null
     signIn(email:string,password:string):Promise<void>
     signOut():void
 }
+interface userProps{
+    name:string
+    avatar:string
+    email:string
+}
+
 
 const AuthContext = createContext<AuthContextProps>({} as AuthContextProps)
 
 export const AuthProvider: React.FC = ({children}) => {
-    const [user,setUser] =useState<object | null>(null)
+    const [user,setUser] =useState<userProps | null>(null)
     
     useEffect(()=>{
         const userLocal = localStorage.getItem('user:proffy')
@@ -20,6 +26,8 @@ export const AuthProvider: React.FC = ({children}) => {
             setUser(JSON.parse(userLocal))
         }
     },[])
+
+    
 
     const signIn = async(email:string,password:string)=>{
         try{
@@ -45,7 +53,7 @@ export const AuthProvider: React.FC = ({children}) => {
     }
 
   return (
-      <AuthContext.Provider value={{signed:!!user,user,signIn,signOut}} >
+      <AuthContext.Provider value={{signed:!!user, user, signIn, signOut}} >
           {children}
       </AuthContext.Provider>
   )
