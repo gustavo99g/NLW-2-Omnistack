@@ -6,7 +6,7 @@ import './styles.css'
 
 const PageContainer: React.FC = ({children}) => {
   return (
-    <div className="container">
+    <div className="grid">
         {children}
     </div>
   )

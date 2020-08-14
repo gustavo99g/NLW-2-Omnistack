@@ -77,7 +77,7 @@ const TeacherForm = () => {
 
   return (
     <div id='page-teacher-form' className="container">
-      <Header title='Que incrivel que voce quer dar aulas' description='O primeiro passo é preencher esse formulario de inscrição' />
+      <Header title='Que incrivel que voce quer dar aulas' label='Dar Aulas' description='O primeiro passo é preencher esse formulario de inscrição' />
 
       <main>
         <fieldset>

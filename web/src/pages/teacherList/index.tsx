@@ -1,4 +1,4 @@
-import React,{useState, FormEvent} from 'react';
+import React,{useState, FormEvent,useEffect} from 'react';
 import Header from '../../components/Header'
 
 import whatsappIcon from '../../assets/images/icons/whatsapp.svg'
@@ -7,6 +7,10 @@ import './styles.css'
 import Input from '../../components/Input';
 import Select from '../../components/Select';
 import api from '../../services/api';
+
+interface teacherProp{
+  class:teacherItem
+}
 
 interface teacherItem {
   id:number,
@@ -21,22 +25,38 @@ interface teacherItem {
 
 
 const TeacherList= () => {
-  const [subject, setSubject] = useState('')
-  const [week_day, setWeek_day] = useState('')
-  const [time, setTime] = useState('')
+  const [subject, setSubject] = useState<string>()
+  const [week_day, setWeek_day] = useState<string>()
+  const [time, setTime] = useState<string>()
   const [teachers, setTeachers] = useState([])
 
+  const handleGetTeachers = async() =>{
+    try{
+      const res = await api.get('/classes',{
+        params:{
+          subject,
+          week_day,
+          time
+        }
+      })
+      setTeachers(res.data)   
+
+    }catch(err){
+      console.log(err)
+    }
+  }
 
   const handleSearchTeacher =(e:FormEvent) =>{
     e.preventDefault()
-    api.get('/classes',{
-      params:{
-        subject,
-        week_day,
-        time
-      }
-    }).then(res=>setTeachers(res.data))
+    handleGetTeachers()
   }
+
+  useEffect(()=>{
+    handleGetTeachers()
+  },[])
+
+  console.log(teachers)
+
 
   const handleNewConnection =(user_id: number) =>{
     api.post('/connections', {user_id})
@@ -45,13 +65,14 @@ const TeacherList= () => {
 
   return (
     <div id='page-teacher-list' className="container">
-      <Header title='Estes são os proffys disponiveis'>
+      <Header title='Estes são os proffys disponiveis' label='Estudar'>
         <form className="search-teachers" onSubmit={handleSearchTeacher} >
         <Select 
           name='subject' 
           label='Materia'
           onChange={(e)=>setSubject(e.target.value)}
           options={[
+            {value:'', label:'Todas as Materias'},
             {value:'Artes', label:'Artes'},
             {value:'Biologia', label:'Biologia'},
             {value:'Matematica', label:'Matematica'},
@@ -71,6 +92,7 @@ const TeacherList= () => {
           onChange={(e)=>setWeek_day(e.target.value)}
           
           options={[
+            {value:'', label:'Qualquer dia'},
             {value:'0', label:'Domingo'},
             {value:'1', label:'Segunda'},
             {value:'2', label:'Terça'},
@@ -87,24 +109,24 @@ const TeacherList= () => {
         </form>
       </Header>
       <main>
-        {teachers.map((teacher:teacherItem) =>(
-          <article key={teacher.id} className="teacher-item">
+        {teachers.map((teacher:teacherProp) =>(
+          <article key={teacher.class.id} className="teacher-item">
           <header>
-            <img src={teacher.avatar} alt="img"/>
+            <img src={teacher.class.avatar} alt="img"/>
             <div>
-              <strong>{teacher.name}</strong>
-              <span>{teacher.subject}</span>
+              <strong>{teacher.class.name}</strong>
+              <span>{teacher.class.subject}</span>
             </div>
           </header>
 
           <p>
-            {teacher.bio}
+            {teacher.class.bio}
           </p>
           <footer>
             <p>Preço/hora
-              <strong>R$ {teacher.cost}</strong>
+              <strong>R$ {teacher.class.cost}</strong>
             </p>
-            <a target='_blank' onClick={()=>handleNewConnection(teacher.id)} href={`https://wa.me/${teacher.whatsapp}`}  >
+            <a target='_blank' onClick={()=>handleNewConnection(teacher.class.id)} href={`https://wa.me/${teacher.class.whatsapp}`}  >
               <img src={whatsappIcon} alt="Icon"/>
               Entrar em contato
             </a>

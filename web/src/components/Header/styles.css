@@ -10,8 +10,21 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    
     color: var (--color-text-in-primary);
     padding: 1.6rem 0;
+}
+
+.page-header .top-bar-container h1{
+    color: #D4C2FF;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 17px;
+}
+
+.page-header .background {
+    background-color: #774DD6;
+    width: 100%;
 }
 
 .page-header .top-bar-container > img{

@@ -10,6 +10,7 @@ interface routesProps extends RouteProps{
 const RouteWrapper:React.FC<routesProps> =({isPrivate=false,component:Component,...rest})=>{
     
     const {signed} = useContext(AuthContext)
+    console.log(signed)
 
     if (!signed && isPrivate){
         return <Redirect  to={"/"} />

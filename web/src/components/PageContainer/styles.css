@@ -1,15 +1,15 @@
-.container{
+.grid{
     width: 100vw;
     height: 100vh;
     
 }
-.container .left{
+.grid .left{
     opacity: 0;
     display: none;
     visibility: hidden;
     padding: 0 1.5rem;
 }
-.container .right{
+.grid .right{
     background-color: #F0F0F7;
     height: 100vh;
     display: flex;
@@ -18,7 +18,7 @@
     flex-direction: column;
 }
 
-.container .right form{
+.grid .right form{
     width: 30rem;
     margin: 0 auto;
     display: flex;
@@ -26,20 +26,20 @@
     
 }
 
-.container .right form h1{
+.grid .right form h1{
     font-weight: 600;
     font-size: 3.6rem;
     line-height: 3.6rem;
     color:#32264D;
 }
 
-.container .right form .input-container{
+.grid .right form .input-container{
     margin-top: 4rem;
     display: flex;
     flex-direction: column;
 }
 
-.container .right form .input-container div{
+.grid .right form .input-container div{
     border: 0;
     background: #FAFAFC;
     border: 1px solid #E6E6F0;
@@ -51,23 +51,23 @@
     outline: none;
 }
 
-.container .right form .input-container div span{
+.grid .right form .input-container div span{
     color: #9C98A6;
     font-size: 1.2rem;
 }
 
 
-.container .right form .input-container input{
+.grid .right form .input-container input{
     background: #FAFAFC;
     padding-top: 0.5rem;
     border: 0;
     outline: none;
 
 }
-.container .right form .input-container input::-ms-reveal{
+.grid .right form .input-container input::-ms-reveal{
     display: none;
 }
-.container .right form .input-container button{
+.grid .right form .input-container button{
     position: absolute;
     right: 1.5rem;
     top: 2.5rem;
@@ -80,11 +80,11 @@
     align-items: center;
 }
 
-.container .right form .input-container button:hover{
+.grid .right form .input-container button:hover{
     cursor: pointer;
 }
 
-.container .right form .input-container div:focus-within::after{
+.grid .right form .input-container div:focus-within::after{
     width: 1px;
     height: calc(100% -2.6rem);
     content: '';
@@ -95,14 +95,14 @@
     bottom: 1.3rem;
 }
 
-.container .right form .input-container div:first-child{
+.grid .right form .input-container div:first-child{
     border-radius: 0.8rem 0.8rem 0 0;
 }
-.container .right form .input-container div:last-child{
+.grid .right form .input-container div:last-child{
     border-radius: 0 0 0.8rem 0.8rem;
 }
 
-.container .right form .button{
+.grid .right form .button{
     height: 4.6rem;
     background: var(--color-secundary);
     color: var(--color-button-text);
@@ -118,18 +118,18 @@
     margin-top: 3.2rem;
 }
 
-.container .right form .button:hover{
+.grid .right form .button:hover{
     background: var(--color-secundary-dark);
 }
 
 
 @media (min-width:800px){
-    .container{
+    .grid{
         display: grid;
         grid-template-columns: 1fr 1fr;
 
     }
-    .container .left{
+    .grid .left{
         background-color: var(--color-primary);
         opacity: 1;
         
@@ -143,7 +143,7 @@
         
     }
     
-    .container .left h1{
+    .grid .left h1{
         color: #D4C2FF;   
     }
 }
