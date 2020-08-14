@@ -10,6 +10,13 @@ import api from '../../services/api';
 
 interface teacherProp{
   class:teacherItem
+  schedule:Array<scheduleProps>
+}
+
+interface scheduleProps{
+  week_day:number
+  from:number
+  to:number
 }
 
 interface teacherItem {
@@ -29,6 +36,14 @@ const TeacherList= () => {
   const [week_day, setWeek_day] = useState<string>()
   const [time, setTime] = useState<string>()
   const [teachers, setTeachers] = useState([])
+
+  const days =[
+            {value:1, label:'Segunda'},
+            {value:2, label:'Terça'},
+            {value:3, label:'Quarta'},
+            {value:4, label:'Quinta'},
+            {value:5, label:'Sexta'},
+  ]
 
   const handleGetTeachers = async() =>{
     try{
@@ -55,7 +70,6 @@ const TeacherList= () => {
     handleGetTeachers()
   },[])
 
-  console.log(teachers)
 
 
   const handleNewConnection =(user_id: number) =>{
@@ -92,15 +106,13 @@ const TeacherList= () => {
           onChange={(e)=>setWeek_day(e.target.value)}
           
           options={[
-            {value:'', label:'Qualquer dia'},
-            {value:'0', label:'Domingo'},
+            {value:'', label:'Qualquer dia'},    
             {value:'1', label:'Segunda'},
             {value:'2', label:'Terça'},
             {value:'3', label:'Quarta'},
             {value:'4', label:'Quinta'},
             {value:'5', label:'Sexta'},
-            {value:'6', label:'Sabádo'},
-         
+          
           
           ]}
           />
@@ -122,6 +134,18 @@ const TeacherList= () => {
           <p>
             {teacher.class.bio}
           </p>
+          <div className="schedules">
+            {days.map(sche=>(
+            <div key={sche.label} style={{opacity:teacher.schedule.find(schedule=> schedule.week_day === sche.value) ? 1 :0.5}} >
+              <p>Dia</p>
+              <span>{sche.label}</span>
+              <p>Horário</p>
+              <span>{teacher.schedule.map(schedule=> schedule.week_day === sche.value ? (schedule.from/60)+'h  -  ' +(schedule.to/60)+'h' :'')} </span>
+            </div>
+            ))}
+            
+          </div>
+
           <footer>
             <p>Preço/hora
               <strong>R$ {teacher.class.cost}</strong>

@@ -45,12 +45,14 @@
     padding: 3.2rem 2rem;
     display: flex;
     align-items: center;
+    margin-top: 1.5rem;
 }
 
 .teacher-item header img{
     width: 8rem;
     height: 8rem;
     border-radius: 4rem;
+    
 }
 
 .teacher-item header div{
@@ -70,17 +72,52 @@
   
 }
 
+.teacher-item .schedules{
+    padding: 0 3.2rem;
+    margin-top: 2.5rem;
+    width: 100%;
+    display: grid;
+    grid-template-rows: repeat(5, 1fr);
+    gap: 1.6rem;
+}
+
+.teacher-item .schedules div{
+    background: #FAFAFC;
+    border: 1px solid #E6E6F0;
+    border-radius: 0.5rem;
+    padding: 1.6rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.teacher-item .schedules div p{
+ 
+    color: #9C98A6;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 20px;
+}
+.teacher-item .schedules div span{
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 26px;
+    color: #6A6180;
+}
+
 .teacher-item > p{
     padding: 0 2rem;
     font-size: 1.6rem;
     line-height: 2.8rem;
+    margin-top: 1.9rem;
 }
 
 .teacher-item footer{
-    padding: 3.2rem 2rem;
+    padding: 3.2rem;
+    margin-top: 3.2rem;
     background: var(--color-box-footer);
     border-top: 1px solid var(--color-line-in-white);
-    margin-top: 3.2rem;
+   
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -94,7 +131,7 @@
 
 .teacher-item footer a{
     width: 20rem;
-    height: 5.6rem;
+    height: 5.2rem;
     background:  var(--color-secundary);
     color: var(--color-button-text);
     border: 0;
@@ -131,13 +168,21 @@
         max-width: 740px;
         margin: 0 auto;
     }
-    .teacher-item header,
-    .teacher-item footer{
+    .teacher-item header{
         padding: 0 3.2rem;
     }
 
     .teacher-item > p{
         padding: 0 3.2rem;
+    }
+
+    .teacher-item .schedules {
+        grid-template-columns: repeat(5, 1fr);
+        grid-template-rows: none;
+    }
+    .teacher-item .schedules div{
+        display: inline;
+        
     }
 
     .teacher-item footer p strong{
