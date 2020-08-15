@@ -6,6 +6,33 @@
 #page-teacher-form .page-header .header-content{
     margin-bottom: 6.4rem;
 }
+
+#page-teacher-form .info{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+#page-teacher-form .info img{
+    width: 15rem;
+    height: 15rem;
+    border-radius: 50%;
+}
+#page-teacher-form .info h1{
+    color: #ffffff;
+    margin-top: 1.2rem;
+}
+
+#page-teacher-form .info p{
+    margin-top: 1.5rem;
+    color: #D4C2FF;
+    font-weight: normal;
+    font-size: 2.4rem;
+    line-height: 2.6rem;
+}
+
 #page-teacher-form main{
     background: var(--color-box-base);
     width: 100%;
@@ -25,6 +52,33 @@
 
 #page-teacher-form main fieldset + fieldset{
     margin-top: 6.4rem;
+}
+#page-teacher-form main fieldset .bottom{
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    width: 100%;
+    margin-top: 1.8rem;
+}
+
+#page-teacher-form main fieldset .bottom hr{
+    width: 100%;
+   
+    border: 1px solid #E6E6F0;
+  
+}
+
+#page-teacher-form main fieldset .bottom h1{
+    color: #E33D3D;
+    font-weight: 600;
+    font-size: 1.4rem;
+    line-height: 2.4rem;
+    width: 35rem;
+    
+    text-align: center;
+}
+#page-teacher-form main fieldset .bottom h1:hover{
+    cursor: pointer;
 }
 
 #page-teacher-form main fieldset legend{

@@ -109,7 +109,7 @@ export default {
          .select(['classes.subject', 'classes.id as classes_id','classes.cost','users.*'])
         .distinct()
         
-        const schedule = await db('class_schedule').where('class_id', user[0].classes_id)
+        const schedule = await db('class_schedule').where('class_id', user[0].classes_id).select(['to','from','week_day'])
         const {name:nameFull} = user[0]
         const [name,lastName] = nameFull.split(' ')
 

@@ -7,9 +7,9 @@ import backIcon from '../../assets/images/icons/back.svg'
 import './styles.css'
 
 interface PageHeaderProps{
-    title:string,
+    title?:string,
     description?:string
-    label:string
+    label?:string
 }
 
 const Header:React.FC<PageHeaderProps> = ({description,title,label,children}) => {

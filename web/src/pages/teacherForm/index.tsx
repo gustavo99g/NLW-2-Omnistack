@@ -1,4 +1,4 @@
-import React,{useState,ChangeEvent} from 'react';
+import React,{useState,ChangeEvent,useEffect} from 'react';
 import Header from '../../components/Header';
 import {useHistory} from 'react-router-dom'
 import Input from '../../components/Input';
@@ -8,14 +8,29 @@ import Select from '../../components/Select';
 
 import './styles.css'
 import api from '../../services/api';
+import converTotime from '../../utils/convertToTIme';
 
+interface inputProps{
+  name:string
+  lastName:string
+  avatar:string
+  cost:number
+  email:string
+  whatsapp:string
+}
 
+interface scheProps {
+  week_day:number
+  from:string
+  to:string
+}
 
 const TeacherForm = () => {
   const [scheduleItems, setScheduleItems] = useState([
     {week_day:0, from:'', to:''},
   ])
-  const [inputs,setInputs] = useState({})
+
+  const [inputs,setInputs] = useState<inputProps>({} as inputProps)
   const [textArea, setTextArea] = useState('')
   const [subject, setSubject] = useState('')
   const history = useHistory()
@@ -28,6 +43,37 @@ const TeacherForm = () => {
       to:''
     }])
   }
+  useEffect(()=>{
+    const getUserDate = async () =>{
+      const res = await api.get('/users')
+      const {subject,name,lastName,avatar,cost,email,whatsapp,bio} = res.data.user[0]
+      setSubject(subject)
+      setTextArea(bio)
+      setInputs({
+        name,
+        lastName,
+        avatar,
+        cost,
+        email,
+        whatsapp
+      })
+      const newSchedule = res.data.schedule.map((sche:scheProps) =>{
+
+        const to = converTotime(sche.to)
+        const from = converTotime(sche.from)
+        return {
+          ...sche,
+          to,
+          from
+        }
+        
+      })
+    
+      setScheduleItems(newSchedule) 
+  
+    }
+    getUserDate()
+  },[])
 
   const handleInputsChange =(e:ChangeEvent<HTMLInputElement>)=>{
     const {id, value} = e.target
@@ -39,7 +85,7 @@ const TeacherForm = () => {
 
   }
 
-  const handleSubmit =() =>{
+  const handleSubmit = async () =>{
 
     const data ={
       ...inputs,
@@ -47,16 +93,17 @@ const TeacherForm = () => {
       subject,
       schedule:scheduleItems
     }
-    api.post('/classes', data).then(()=>{
-      alert('Cadastro realizado com sucesso')
-      history.push('/')
-    }).catch(()=>{
-      alert('Falha no cadastro')
-    })
+    try{
+      await api.put('/users', data)
+      history.push('/home')
+      
+    }catch(err){
+      alert('Falha ao salvar os dados, tente novamente mais tarde')
+    }
 
     
-    
   }
+
 
   const handleScheduleItemValue = (position:number, field:string, value:string) =>{
     const newArray = scheduleItems.map((schedule, index)=>{
@@ -66,7 +113,6 @@ const TeacherForm = () => {
           [field]:value
         }
       }
-
       return schedule
     } )
 
@@ -74,19 +120,33 @@ const TeacherForm = () => {
 
   }
 
+  const handleDeleteSchedule =(index:number) =>{
+    const newArray = [...scheduleItems]
+    newArray.splice(index,1)
+    setScheduleItems(newArray)
+  }
+
 
   return (
+  
     <div id='page-teacher-form' className="container">
-      <Header title='Que incrivel que voce quer dar aulas' label='Dar Aulas' description='O primeiro passo é preencher esse formulario de inscrição' />
+      <Header  label='Meu perfil'>
+        <div className="info">
+          <img src={inputs.avatar} alt="logo"/>
+          <h1>{`${inputs.name} ${inputs.lastName}`}</h1>
+          <p>{subject}</p>
+        </div>
+      </Header>
 
       <main>
         <fieldset>
           <legend>Seus Dados</legend>
 
-          <Input name='name' label='Nome completo' onChange={handleInputsChange} />
-          <Input name='avatar' label='Avatar'onChange={handleInputsChange}  />
-          <Input name='whatsapp' label='WhatsApp' onChange={handleInputsChange}  />
-          <TextArea name='bio' label='Bio' onChange={(e)=>setTextArea(e.target.value)} />
+          <Input name='name' label='Nome' onChange={handleInputsChange} value={inputs.name || ''} />
+          <Input name='lastName' label='Sobrenome' onChange={handleInputsChange} value={inputs.lastName || ''} />
+          <Input name='avatar' label='Avatar'onChange={handleInputsChange} value={inputs.avatar || ''} />
+          <Input name='whatsapp' label='WhatsApp' onChange={handleInputsChange} value={inputs.whatsapp || ''}  />
+          <TextArea name='bio' label='Bio' onChange={(e)=>setTextArea(e.target.value)} value={textArea}/>
         </fieldset>
 
         <fieldset>
@@ -96,6 +156,7 @@ const TeacherForm = () => {
           onChange={(e)=> setSubject(e.target.value)}
           name='subject' 
           label='Materia'
+          value={subject}
           options={[
             {value:'Artes', label:'Artes'},
             {value:'Biologia', label:'Biologia'},
@@ -110,7 +171,7 @@ const TeacherForm = () => {
             
           ]}
           />
-          <Input name='cost' label='Custo da sua aula por hora (R$)' onChange={handleInputsChange}  />
+          <Input name='cost' label='Custo da sua aula por hora (R$)' onChange={handleInputsChange} value={inputs.cost || ''}   />
           
         </fieldset>
 
@@ -124,26 +185,36 @@ const TeacherForm = () => {
 
           
           {scheduleItems.map((schedule,index)=>(
-            <div key={schedule.week_day} className="schedule-item">
+            <div key={schedule.week_day}>     
+            <div  className="schedule-item">
             <Select 
             onChange={(e)=>handleScheduleItemValue(index, 'week_day',e.target.value )}
             name='week_day' 
             label='Dia da semana'
+            value={schedule.week_day}
             options={[
-              {value:'0', label:'Domingo'},
+              
               {value:'1', label:'Segunda'},
               {value:'2', label:'Terça'},
               {value:'3', label:'Quarta'},
               {value:'4', label:'Quinta'},
               {value:'5', label:'Sexta'},
-              {value:'6', label:'Sabádo'},
            
+          
             
             ]}
             />
-            <Input name='from' label='Das' type='time' onChange={(e)=>handleScheduleItemValue(index, 'from',e.target.value )} />
-          <Input name='to' label='Até' type='time' onChange={(e)=>handleScheduleItemValue(index, 'to',e.target.value )} />
+            <Input name='from' label='Das' type='time' value={schedule.from} onChange={(e)=>handleScheduleItemValue(index, 'from',e.target.value )} />
+          <Input name='to' label='Até' type='time' value={schedule.to}  onChange={(e)=>handleScheduleItemValue(index, 'to',e.target.value )}   />
           </div>
+          <div className='bottom'>
+            <hr/>
+            <h1 onClick={()=>handleDeleteSchedule(index)} >Excluir horario</h1>
+            <hr/>
+          </div>
+          </div>
+          
+      
           ))}
           
          
