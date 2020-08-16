@@ -34,7 +34,7 @@ const Landing = () => {
           <div id='container' className="page-landing-content"  >
                 <header>
                     <div className="userInfo">
-                        <img src={user?.avatar} alt="avatar"/>
+                        <img src={user?.avatar || 'https://www.kindpng.com/picc/m/421-4212275_transparent-default-avatar-png-avatar-img-png-download.png'} alt="avatar"/>
                         <span>{user?.name} </span>
                     </div>
                     <button onClick={signOut} >

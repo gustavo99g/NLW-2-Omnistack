@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, FormEvent } from 'react';
 
 import PageContainer from '../../components/PageContainer'
 
@@ -8,10 +8,12 @@ import Input from '../../components/Input'
 /* import './styles.css' */
 import { Link } from 'react-router-dom';
 import Modal from '../../components/Modal';
+import api from '../../services/api';
 
 const Forget: React.FC = () => {
 
     const [modal,setModal] = useState(false)
+    const [email,setEmail] = useState('')
 
     if (modal){
         return <Modal title='Redefinição enviada!' 
@@ -19,22 +21,34 @@ const Forget: React.FC = () => {
          button='Voltar ao login' />
     }
 
+    const handleSubmit =async (e:FormEvent) =>{
+        e.preventDefault()
+
+        try{
+            await api.post('/forgetPassword',{email})
+            setModal(true)
+            console.log('test')
+        }catch(err){
+            alert('Usuario nao encontrado, por favor verifique o email')
+        }
+    }
+
   return (
       <PageContainer>
           
         <div className="right">
             
-            <form>
+            <form onSubmit={handleSubmit} >
             <Link to='/' >
                 <img src={backIcon} alt="Back"/>
             </Link>
                 <h1>Eita, esqueceu sua senha?</h1>
                 <p>Não esquenta, vamos dar um jeito nisso.</p>
                
-                <Input label='Email' name='Email' />
+                <Input label='Email' name='Email' onChange={e=> setEmail(e.target.value)} />
                     
                 
-                <button className='button' onClick={()=>setModal(true)} >Enviar</button>
+                <button className='button'>Enviar</button>
             </form>
             
         </div>

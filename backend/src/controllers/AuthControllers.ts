@@ -39,12 +39,12 @@ export default {
         const user = await db('users').where({email}).select('id')
 
         if(user.length === 0){
-            return res.json({message:'User not found'})
+            return res.status(401).json({message:'User not found'})
         }
         const resetToken = randomBytes(24).toString('hex')
         const resetTokenExpires = Date.now() + 30 *60 *1000
 
-        const resetLink = `${req.protocol}://${req.get('host')}/reset/${resetToken}`
+        const resetLink = `${req.protocol}://localhost:3333/reset/${resetToken}`
         
         const message = `Clique aqui para recuperar a sua senha \n${resetLink} \nCaso nao tenha sido voce que pediu a recuperação de senha ignore esse e-mail
         `

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import Modal from '../../components/Modal'
 
@@ -8,9 +8,32 @@ import logo from '../../assets/images/logo.svg'
 import backIcon from '../../assets/images/icons/back.svg'
 import './styles.css'
 import InputPassword from '../../components/InputPassword';
+import api from '../../services/api';
 
 
 const Register: React.FC = () => {
+
+    const [name,setName] = useState('')
+    const [lastName,setLastName] = useState('')
+    const [email,setEmail] = useState('')
+    const [password,setPassword] = useState('')
+
+    const handleSubmit = (e:FormEvent)=>{
+        e.preventDefault()
+        const data={
+            name,
+            lastName,
+            email,
+            password
+        }
+        try{
+            api.post('/users', data)
+            setModal(true)
+        }catch(err){
+            alert('Falha ao cadastrar, tente novamente mais tarde')
+        }
+        
+    }
 
  
     const [modal,setModal] = useState(false)
@@ -21,7 +44,7 @@ const Register: React.FC = () => {
   return (
       <PageContainer>    
         <div className="right">           
-            <form onSubmit={(e)=>e.preventDefault()} >
+            <form onSubmit={handleSubmit} >
             <Link to='/' >
                 <img src={backIcon} alt="Back"/>
             </Link>
@@ -30,20 +53,20 @@ const Register: React.FC = () => {
                 <div className="input-container">
                     <div>
                         <span>Nome</span>
-                        <input type="text"/>
+                        <input type="text" onChange={e=>setName(e.target.value)} />
                     </div>
                     <div>
                         <span>Sobrenome</span>
-                        <input type="text"/>
+                        <input type="text" onChange={e=>setLastName(e.target.value)} />
                     </div>
                     <div>
                         <span>E-mail</span>
-                        <input type="email"/>
+                        <input type="email" onChange={e=>setEmail(e.target.value)} />
                     </div>
-                    <InputPassword label='Senha' />
+                    <InputPassword label='Senha' onChange={e=>setPassword(e.target.value)} />
                     
                 </div>
-                <button className='button' onClick={()=>setModal(true)} >Concluir cadastro</button>
+                <button className='button' >Concluir cadastro</button>
             </form>
             
         </div>
