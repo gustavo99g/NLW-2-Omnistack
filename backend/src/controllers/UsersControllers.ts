@@ -16,7 +16,7 @@ export default {
     async index(req:Request, res:Response){
         const filters = req.query
         
-        let query = db('classes')       
+        let query = db('classes').where('show',true)       
             if(filters.week_day){
                 query.whereExists(function(){
                     this.select('class_schedule.*')
@@ -95,7 +95,7 @@ export default {
 
         }catch(err){
             await trx.rollback()
-            return res.json({message:err.message})
+            return res.status(401).json({message:err.message})
             
         }
 
@@ -156,6 +156,7 @@ export default {
             await trx('classes').where({user_id:id}).update({
                 subject,
                 cost,
+                show:true,
                 user_id:id
             })
             const classes_id = await trx('classes').where({user_id:id})
@@ -180,7 +181,7 @@ export default {
 
         }catch(err){
             await trx.rollback()
-            return res.json({message:err.message})
+            return res.status(401).json({message:err.message})
             
         }
 
