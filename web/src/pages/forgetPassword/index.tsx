@@ -45,7 +45,7 @@ const Forget: React.FC = () => {
                 <h1>Eita, esqueceu sua senha?</h1>
                 <p>Não esquenta, vamos dar um jeito nisso.</p>
                
-                <Input label='Email' name='Email' onChange={e=> setEmail(e.target.value)} />
+                <Input label='Email' name='Email' onChange={e=> setEmail(e.target.value)} required/>
                     
                 
                 <button className='button'>Enviar</button>

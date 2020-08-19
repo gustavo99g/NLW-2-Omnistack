@@ -143,16 +143,16 @@ const TeacherForm = () => {
           <legend>Seus Dados</legend>
 
           <div className="inputBlock">
-            <Input name='name' label='Nome' onChange={handleInputsChange} value={inputs.name || ''} />
-            <Input name='lastName' label='Sobrenome' onChange={handleInputsChange} value={inputs.lastName || ''} />
+            <Input name='name' label='Nome' onChange={handleInputsChange} value={inputs.name || ''} required />
+            <Input name='lastName' label='Sobrenome' onChange={handleInputsChange} value={inputs.lastName || ''} required/>
           </div>
           <div className="inputBlock">
-            <Input name='email' label='E-mail' onChange={handleInputsChange} value={inputs.email || ''} />
-            <Input name='whatsapp' label='WhatsApp' onChange={handleInputsChange} value={inputs.whatsapp || ''}  />
+            <Input name='email' type='email' label='E-mail' onChange={handleInputsChange} value={inputs.email || ''}required />
+            <Input name='whatsapp' label='WhatsApp' onChange={handleInputsChange} value={inputs.whatsapp || ''}  required/>
           </div>
-          <Input name='avatar' label='Avatar'onChange={handleInputsChange} value={inputs.avatar || ''} />
+          <Input name='avatar' label='Avatar'onChange={handleInputsChange} value={inputs.avatar || ''} required/>
           
-          <TextArea name='bio' label='Bio' onChange={(e)=>setTextArea(e.target.value)} value={textArea}/>
+          <TextArea name='bio' label='Bio' onChange={(e)=>setTextArea(e.target.value)} value={textArea} required/>
         </fieldset>
 
         <fieldset>
@@ -163,6 +163,7 @@ const TeacherForm = () => {
           name='subject' 
           label='Materia'
           value={subject}
+          required
           options={[
             {value:'Artes', label:'Artes'},
             {value:'Biologia', label:'Biologia'},
@@ -177,7 +178,7 @@ const TeacherForm = () => {
             
           ]}
           />
-          <Input name='cost' label='Custo da sua aula por hora (R$)' onChange={handleInputsChange} value={inputs.cost || ''}   />
+          <Input name='cost' label='Custo da sua aula por hora (R$)' onChange={handleInputsChange} value={inputs.cost || ''}required   />
           
         </fieldset>
 
@@ -197,6 +198,7 @@ const TeacherForm = () => {
             onChange={(e)=>handleScheduleItemValue(index, 'week_day',e.target.value )}
             name='week_day' 
             label='Dia da semana'
+            required
             value={schedule.week_day}
             options={[
               

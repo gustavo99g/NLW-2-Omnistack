@@ -51,8 +51,8 @@ const ChangePass: React.FC = () => {
                 <h1>Quase pronto</h1>
                 <p>Voce só precisa digitar sua nova senha abaixo e confirma-la</p>
                <div className="input-container">
-               <InputPassword label='Nova Senha' onChange={e=>setPassoword(e.target.value)} />
-                <InputPassword label='Confirme a nova Senha' onChange={e=>setConfirmPassoword(e.target.value)} />
+               <InputPassword label='Nova Senha' onChange={e=>setPassoword(e.target.value)} required/>
+                <InputPassword label='Confirme a nova Senha' onChange={e=>setConfirmPassoword(e.target.value)}required />
                     
                </div>
                 

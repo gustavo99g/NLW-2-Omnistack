@@ -53,17 +53,17 @@ const Register: React.FC = () => {
                 <div className="input-container">
                     <div>
                         <span>Nome</span>
-                        <input type="text" onChange={e=>setName(e.target.value)} />
+                        <input required type="text"  onChange={e=>setName(e.target.value)}  />
                     </div>
                     <div>
                         <span>Sobrenome</span>
-                        <input type="text" onChange={e=>setLastName(e.target.value)} />
+                        <input type="text" required onChange={e=>setLastName(e.target.value)}  />
                     </div>
                     <div>
                         <span>E-mail</span>
-                        <input type="email" onChange={e=>setEmail(e.target.value)} />
+                        <input type="email" required onChange={e=>setEmail(e.target.value)} />
                     </div>
-                    <InputPassword label='Senha' onChange={e=>setPassword(e.target.value)} />
+                    <InputPassword label='Senha' required onChange={e=>setPassword(e.target.value)} />
                     
                 </div>
                 <button className='button' >Concluir cadastro</button>
