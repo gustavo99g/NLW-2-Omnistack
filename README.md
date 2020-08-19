@@ -1,5 +1,5 @@
 # NLW-2-Omnistack
-Projeto desenvolvido na Next level weekda rocketseat utilizando NodeJs, ReactJs e React Native
+Projeto desenvolvido na Next level week da rocketseat utilizando NodeJs, ReactJs e React Native
 
 
 # Ainda em desenvolvimento
