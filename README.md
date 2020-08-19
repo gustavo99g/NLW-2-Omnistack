@@ -5,7 +5,7 @@ Projeto desenvolvido na Next level weekda rocketseat utilizando NodeJs, ReactJs 
 # Ainda em desenvolvimento
 -Backend terminado
 <br>
--Frontend ainda em desenvolvimento
+-Frontend terminado
 <br>
 -Mobile ainda em desenvolvimento
 
