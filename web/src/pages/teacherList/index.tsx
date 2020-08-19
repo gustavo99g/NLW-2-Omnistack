@@ -121,6 +121,8 @@ const TeacherList= () => {
         </form>
       </Header>
       <main>
+          {teachers.length === 0 && <h1>Nenhum professor encontrado com sua pesquisa.</h1>}
+
         {teachers.map((teacher:teacherProp) =>(
           <article key={teacher.class.id} className="teacher-item">
           <header>

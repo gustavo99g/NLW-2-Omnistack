@@ -142,10 +142,16 @@ const TeacherForm = () => {
         <fieldset>
           <legend>Seus Dados</legend>
 
-          <Input name='name' label='Nome' onChange={handleInputsChange} value={inputs.name || ''} />
-          <Input name='lastName' label='Sobrenome' onChange={handleInputsChange} value={inputs.lastName || ''} />
+          <div className="inputBlock">
+            <Input name='name' label='Nome' onChange={handleInputsChange} value={inputs.name || ''} />
+            <Input name='lastName' label='Sobrenome' onChange={handleInputsChange} value={inputs.lastName || ''} />
+          </div>
+          <div className="inputBlock">
+            <Input name='email' label='E-mail' onChange={handleInputsChange} value={inputs.email || ''} />
+            <Input name='whatsapp' label='WhatsApp' onChange={handleInputsChange} value={inputs.whatsapp || ''}  />
+          </div>
           <Input name='avatar' label='Avatar'onChange={handleInputsChange} value={inputs.avatar || ''} />
-          <Input name='whatsapp' label='WhatsApp' onChange={handleInputsChange} value={inputs.whatsapp || ''}  />
+          
           <TextArea name='bio' label='Bio' onChange={(e)=>setTextArea(e.target.value)} value={textArea}/>
         </fieldset>
 

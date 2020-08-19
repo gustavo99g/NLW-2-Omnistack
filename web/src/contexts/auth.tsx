@@ -25,7 +25,7 @@ export const AuthProvider: React.FC = ({children}) => {
         const Token = localStorage.getItem('token:proffy')
         if(userLocal && Token){
             setUser(JSON.parse(userLocal))
-            api.defaults.headers.Authorization = `Beare ${Token}`
+            api.defaults.headers.Authorization = `Bearer ${Token}`
         }
     },[])
 
@@ -42,7 +42,7 @@ export const AuthProvider: React.FC = ({children}) => {
                 setUser(res.data.userInfo)
                 localStorage.setItem('user:proffy', JSON.stringify(res.data.userInfo))
                 localStorage.setItem('token:proffy', res.data.token)
-                api.defaults.headers.Authorization = `Beare ${res.data.token}`
+                api.defaults.headers.Authorization = `Bearer ${res.data.token}`
                 
             }else{
                 alert('Email ou senha incorretos')

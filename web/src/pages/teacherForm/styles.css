@@ -53,6 +53,19 @@
 #page-teacher-form main fieldset + fieldset{
     margin-top: 6.4rem;
 }
+
+#page-teacher-form main fieldset .inputBlock{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+#page-teacher-form main fieldset .inputBlock:nth-child(3) .input-block:nth-child(1) {
+    width: 65%;
+}
+#page-teacher-form main fieldset .inputBlock:nth-child(3) .input-block:nth-child(2) {
+    width: 30%;
+}
+
 #page-teacher-form main fieldset .bottom{
     align-items: center;
     justify-content: center;

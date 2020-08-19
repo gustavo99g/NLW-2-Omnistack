@@ -1,5 +1,5 @@
 import React,{useEffect,useState,useContext} from 'react';
-import {Link} from 'react-router-dom'
+import {Link, useHistory} from 'react-router-dom'
 
 import logoImg from '../../assets/images/logo.svg'
 import landingImg from '../../assets/images/landing.svg'
@@ -19,6 +19,7 @@ const Landing = () => {
     const [connections, setConnections] = useState(0)
 
     const {signOut,user} = useContext(AuthContext)
+    const history = useHistory()
     
 
     useEffect(()=>{
@@ -33,7 +34,7 @@ const Landing = () => {
           
           <div id='container' className="page-landing-content"  >
                 <header>
-                    <div className="userInfo">
+                    <div className="userInfo" onClick={()=>history.push('/give-classes')} >
                         <img src={user?.avatar || 'https://www.kindpng.com/picc/m/421-4212275_transparent-default-avatar-png-avatar-img-png-download.png'} alt="avatar"/>
                         <span>{user?.name} </span>
                     </div>

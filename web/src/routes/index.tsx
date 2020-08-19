@@ -15,7 +15,7 @@ const Routes = () =>{
     return (
         <BrowserRouter>
          
-            <Route path='/' exact component={Login}  />
+            <Route path='/' exact component={Login} />
             <Route path='/study' component={TeacherList} isPrivate/>
             <Route path='/give-classes' component={TeacherForm} isPrivate />
             <Route path='/register' component={Register} />

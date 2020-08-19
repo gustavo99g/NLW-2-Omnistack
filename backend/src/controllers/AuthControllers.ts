@@ -71,7 +71,7 @@ export default {
         try{
             const user = await db('users').where({resetToken})
             if(user.length === 0 || user[0].resetTokenExpires < Date.now()){
-                return res.json({message:'Reset token invalid or expired'})
+                return res.status(401).json({message:'Reset token invalid or expired'})
             }
             const {id} = user[0]
 
@@ -86,10 +86,10 @@ export default {
 
 
         }catch(err){
-            return res.json({message:err.message})
+            return res.status(401).json({message:err.message})
         }
         
 
-        return res.send()
+        
     }
 }
