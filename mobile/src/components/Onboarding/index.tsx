@@ -26,7 +26,7 @@ const Onboarding: React.FC = () => {
 
 
     const handleDone = () =>{
-        navigation.navigate('Landing')
+        navigation.navigate('Home')
     }
 
   

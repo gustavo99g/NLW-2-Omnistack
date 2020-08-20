@@ -3,6 +3,7 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native'
 import {createStackNavigator} from '@react-navigation/stack'
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
+import {} from '@react-navigation/native'
 import {Ionicons} from '@expo/vector-icons'
 
 
@@ -12,6 +13,7 @@ import GiveClasses from './pages/giveClasses'
 import TeacherList from './pages/TeacherList'
 import Favorites from './pages/Favorites'
 import Onboarding from './components/Onboarding'
+import Login from './pages/Login'
 
 const Stack = createStackNavigator()
 const Tabs = createBottomTabNavigator()
@@ -65,16 +67,37 @@ const TabsNAvigator = () =>{
     )
 }
 
+const isSigned = false
+const OnboardingView = false
+
+const Home = () =>{
+    return (
+        <Stack.Navigator screenOptions={{headerShown:false}} >
+                {isSigned 
+                ?
+                <>
+                    <Stack.Screen name='Landing' component={Landing} />
+                    <Stack.Screen name='GiveClasses' component={GiveClasses} /> 
+                    <Stack.Screen name='Study' component={TabsNAvigator} />
+                </> 
+                :
+                <>
+                <Stack.Screen name='Login' component={Login} /> 
+                </>
+                }             
+        </Stack.Navigator>
+    )
+}
 
 const Routes: React.FC = () => {
 
     return(
         <NavigationContainer>
-            <Stack.Navigator screenOptions={{headerShown:false}} initialRouteName='Onboarding' >
+            <Stack.Navigator screenOptions={{headerShown:false}} >
+               
                 <Stack.Screen name='Onboarding' component={Onboarding} />
-                <Stack.Screen name='Landing' component={Landing} />
-                <Stack.Screen name='GiveClasses' component={GiveClasses} /> 
-                <Stack.Screen name='Study' component={TabsNAvigator} />              
+                <Stack.Screen name='Home' component={Home} />
+               
             </Stack.Navigator>
         </NavigationContainer>
     )
