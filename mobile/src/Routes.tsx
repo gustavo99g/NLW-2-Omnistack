@@ -5,10 +5,13 @@ import {createStackNavigator} from '@react-navigation/stack'
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 import {Ionicons} from '@expo/vector-icons'
 
+
+
 import Landing from './pages/Landing'
 import GiveClasses from './pages/giveClasses'
 import TeacherList from './pages/TeacherList'
 import Favorites from './pages/Favorites'
+import Onboarding from './components/Onboarding'
 
 const Stack = createStackNavigator()
 const Tabs = createBottomTabNavigator()
@@ -65,10 +68,10 @@ const TabsNAvigator = () =>{
 
 const Routes: React.FC = () => {
 
-    
     return(
         <NavigationContainer>
-            <Stack.Navigator screenOptions={{headerShown:false}} >
+            <Stack.Navigator screenOptions={{headerShown:false}} initialRouteName='Onboarding' >
+                <Stack.Screen name='Onboarding' component={Onboarding} />
                 <Stack.Screen name='Landing' component={Landing} />
                 <Stack.Screen name='GiveClasses' component={GiveClasses} /> 
                 <Stack.Screen name='Study' component={TabsNAvigator} />              

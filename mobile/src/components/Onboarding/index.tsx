@@ -1,20 +1,47 @@
 import React from 'react';
-import { View,Image,StyleSheet,ImageBackground,Text,SafeAreaView } from 'react-native';
+import { View,Image,StyleSheet,ImageBackground,TouchableOpacity, Alert } from 'react-native';
 import OnboardingScreen from 'react-native-onboarding-swiper'
+import {useNavigation} from '@react-navigation/native'
 
 import background from '../../assets/images/Background.png'
 import giveClassesIcon from '../../assets/images/icons/give-classes.png'
 import studyIcon from '../../assets/images/icons/study.png'
+import nextIcon from '../../assets/images/icons/next.png'
 
 const Onboarding: React.FC = () => {
-  return (
-       
+
+
+    const navigation = useNavigation()
+  
+    const NextButton:React.FC = ({...props}) =>{
+        
+
+        return (
+            <TouchableOpacity {...props} style={styles.nextButton} >
+                <Image source={nextIcon} />
+            </TouchableOpacity>
+            
+        )
+    }
+
+
+    const handleDone = () =>{
+        navigation.navigate('Landing')
+    }
+
+  
+    return (     
             <OnboardingScreen  
                 containerStyles={styles.container}
                 titleStyles={styles.title}
                 imageContainerStyles={styles.imageContainer}
                 subTitleStyles={styles.subtitle}  
                 showSkip={false}
+                bottomBarHeight={120}
+                onDone={handleDone}
+                DoneButtonComponent={NextButton}
+                NextButtonComponent={NextButton}
+                bottomBarColor='#E5E5E5'
                 pages={[
                     {
                     backgroundColor: '#E5E5E5',
@@ -87,6 +114,9 @@ const styles = StyleSheet.create({
         maxWidth:220,
         textAlign:"left",
         paddingLeft:15
+    },
+    nextButton:{
+        marginRight:25
     }
 })
 
