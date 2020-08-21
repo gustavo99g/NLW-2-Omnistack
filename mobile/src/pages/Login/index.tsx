@@ -25,7 +25,7 @@ const Login: React.FC = () => {
         <View style={styles.bottom}>
             <View style={styles.bottomHeader}>
                 <Text style={styles.loginText} >Fazer login</Text>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=> navigate('Register')} >
                     <Text style={styles.createText} > Criar uma conta</Text>
                 </TouchableOpacity>
             </View>

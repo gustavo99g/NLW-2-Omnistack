@@ -15,6 +15,7 @@ import Favorites from './pages/Favorites'
 import Onboarding from './components/Onboarding'
 import Login from './pages/Login'
 import Forget from './pages/Forget'
+import Register from './pages/Register'
 
 const Stack = createStackNavigator()
 const Tabs = createBottomTabNavigator()
@@ -85,6 +86,7 @@ const Home = () =>{
                 <>
                 <Stack.Screen name='Login' component={Login} /> 
                 <Stack.Screen name='Forget' component={Forget} /> 
+                <Stack.Screen name='Register' component={Register} />
                 </>
                 }             
         </Stack.Navigator>
