@@ -1,20 +1,27 @@
 import React from 'react';
-import { View,Text, StyleSheet, ImageBackground, Image, CheckBox } from 'react-native';
-
+import { View,Text, StyleSheet, ImageBackground, Image, CheckBox,TextInput, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import Background from '../../assets/images/give-classes-background.png'
 
 import Logo from '../../assets/images/logo.png'
-import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
+
 
 const Login: React.FC = () => {
+
+    const {navigate} = useNavigation()
+
+
   return (
+     
       <View style={styles.container} >
+           
           <View style={styles.background} >
             <ImageBackground style={styles.imgBackground} source={Background} >
                 <Image source={Logo} style={styles.image} />
                 <Text style={styles.logoTitle} >Sua plaforma de estudos online.</Text>
             </ImageBackground>
           </View>
+         
         <View style={styles.bottom}>
             <View style={styles.bottomHeader}>
                 <Text style={styles.loginText} >Fazer login</Text>
@@ -22,16 +29,20 @@ const Login: React.FC = () => {
                     <Text style={styles.createText} > Criar uma conta</Text>
                 </TouchableOpacity>
             </View>
+            
             <View style={styles.inputs}>
+                
                 <TextInput style={[styles.input,styles.input1]} keyboardType='email-address'  placeholder='E-mail' />
                 <TextInput style={[styles.input, styles.input2]} secureTextEntry showSoftInputOnFocus placeholder='Senha'/>
+                
             </View>
+        
             <View style={styles.reminder} >
                 <View style={styles.check} >
                     <CheckBox />
                     <Text style={styles.reminderText} >Lembrar-me</Text>
                 </View>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=> navigate('Forget')} >
                     <Text style={styles.reminderText} >Esqueci minha senha</Text>
                 </TouchableOpacity>
             </View>
@@ -40,6 +51,7 @@ const Login: React.FC = () => {
             </TouchableOpacity>
         </View>
       </View>
+      
   )
 }
 
@@ -48,7 +60,7 @@ const styles = StyleSheet.create({
         flex:1
     },
     background:{
-        height:'45%',
+        height:'40%',
         
         backgroundColor:'#8257E5',
         
@@ -66,7 +78,7 @@ const styles = StyleSheet.create({
     },
     bottom:{
         flex:1,
-        padding:35
+        padding:30
     },
     bottomHeader:{
         flexDirection:"row",
@@ -76,7 +88,7 @@ const styles = StyleSheet.create({
     inputs:{
         backgroundColor:'#FAFAFC',
         borderRadius:8,
-        marginVertical:15
+        marginVertical:10
     },
     input:{
         borderColor:'#E6E6f0',
@@ -107,7 +119,7 @@ const styles = StyleSheet.create({
         backgroundColor:'#04D361',
         paddingVertical:16,
         borderRadius:8,
-        marginTop:16
+        marginVertical:12
     },
     logoTitle:{
         color:'#D4C2FF',
