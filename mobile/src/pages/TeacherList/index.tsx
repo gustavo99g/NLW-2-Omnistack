@@ -20,28 +20,23 @@ const TeacherList: React.FC = () => {
   const [week_day,setWeek_day] = useState('')
   const [time,setTime] = useState('')
 
-  const handleSubmit =() =>{
-    
-    api.get('/classes',{
+
+  useEffect(()=>{
+    getProffys()
+  },[])
+
+
+  const getProffys = async() =>{
+    const res = await api.get('/classes',{
       params:{
         subject,
         week_day,
         time
-      }
-    }).then(res=>{
-      setTeachers(res.data)
-      setFilterVisible(false)
-    })
+    }})
+    setTeachers(res.data)
+    
   }
-  useEffect(()=>{
-    AsyncStorage.getItem('favorites').then(res=>{
-      if (res){
-        const favoriteTeachers = JSON.parse(res)
-        const favoriteTeacherIds = favoriteTeachers.map((teacher:Teacher)=>teacher.id)
-        setFavorites(favoriteTeacherIds)
-      }
-    })
-  },[])
+
   
 
 
@@ -51,10 +46,11 @@ const TeacherList: React.FC = () => {
         <Header 
         title='Proffys disponiveis' 
         headerRight={(
-          <TouchableOpacity onPress={()=>setFilterVisible(!filterVisible)} >
-            <Feather name='filter' size={24} />
-          </TouchableOpacity>
+          <Text>{teachers.length} Proffys</Text>
         )} >
+          <TouchableOpacity onPress={()=>setFilterVisible(!filterVisible)} >
+            <Feather name='filter' size={24} color='#04D361' />
+          </TouchableOpacity>
           {filterVisible &&<View style={styles.searchForm} >
             <Text style={styles.label} >Materia</Text>
             <TextInput
@@ -86,13 +82,13 @@ const TeacherList: React.FC = () => {
                 />
               </View>
             </View>
-            <TouchableOpacity style={styles.submitButton} onPress={handleSubmit} >
+            <TouchableOpacity style={styles.submitButton} onPress={getProffys} >
               <Text style={styles.submitText} >Buscar</Text>
             </TouchableOpacity>
           </View>}
         </Header>
       <ScrollView style={styles.teacherList} contentContainerStyle={{paddingBottom:16}} >
-        {teachers.map((teacher:Teacher)=><TeacherCard favorited={favorites.includes(teacher.id)} key={teacher.id} teacher={teacher}/>)}
+        {teachers.map((teacher:Teacher)=><TeacherCard key={teacher.class.id} class={teacher.class}/>)}
         
       
       

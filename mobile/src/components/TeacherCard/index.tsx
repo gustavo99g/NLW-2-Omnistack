@@ -9,6 +9,10 @@ import api from '../../services/api';
 
 
 export interface Teacher {
+    class:TeacherProps
+}
+
+interface TeacherProps {
     id:number,
     avatar:string,
     bio:string,
@@ -16,46 +20,17 @@ export interface Teacher {
     name:string,
     subject:string,
     whatsapp:string
-}
-
-interface TeacherProps {
-    teacher:Teacher,
-    favorited:boolean
+ 
 }
 
 
 
-const TeacherCard: React.FC<TeacherProps> = ({teacher,favorited}) => {
-
-    const [favorite, setFavorite] = useState(favorited)
-
-    const  toggleFavorite = async() =>{
-        const favorites = await AsyncStorage.getItem('favorites')
-        let favoritesArray =[]
-        if (favorites){
-            favoritesArray = JSON.parse(favorites)
-        }
-        
-        if (favorite){
-            const favoriteIndex = favoritesArray.findIndex((teacherItem: Teacher) =>{
-                return teacherItem.id === teacher.id
-            })
-            favoritesArray.splice(favoriteIndex, 1)
-            setFavorite(false)
-
-        }else{
-            favoritesArray.push(teacher)
-            setFavorite(true)
-            
-        }
-        await AsyncStorage.setItem('favorites', JSON.stringify(favoritesArray))
-
-    }
+const TeacherCard: React.FC<Teacher> = ({class:classProp}) => {
 
 
     const handleNewConnection =() =>{
-        api.post('/connections', {user_id:teacher.id})
-        Linking.openURL(`whatsapp://send?phone=${teacher.whatsapp}`)
+        api.post('/connections', {user_id:classProp.id})
+        Linking.openURL(`whatsapp://send?phone=${classProp.whatsapp}`)
       }
 
   return (
@@ -63,25 +38,25 @@ const TeacherCard: React.FC<TeacherProps> = ({teacher,favorited}) => {
           <View style={styles.profile}>
             <Image 
             style={styles.avatar}
-            source={{uri:teacher.avatar}}
+            source={{uri:classProp.avatar}}
             />
             <View style={styles.profileInfo}>
-                <Text style={styles.name} >{teacher.name} </Text>
-                <Text style={styles.subject} >{teacher.subject}</Text>
+                <Text style={styles.name} >{classProp.name} </Text>
+                <Text style={styles.subject} >{classProp.subject}</Text>
             </View>
             </View>
             <Text style={styles.bio} >
-                {teacher.bio}
+                {classProp.bio}
             </Text>
 
             <View style={styles.footer} >
                 <Text style={styles.price} >
                     Preço/hora{'   '}
-                    <Text style={styles.priceValue}>R$ {teacher.cost}</Text>
+                    <Text style={styles.priceValue}>R$ {classProp.cost}</Text>
                 </Text>
                 <View style={styles.buttonsContainer} >
-                    <TouchableOpacity style={[styles.favorite,favorite ? styles.favorited : {}]} onPress={toggleFavorite} >
-                        {favorite ? <Image source={unfavoriteIcon} /> : <Image source={heartOutilineIcon} />}
+                    <TouchableOpacity style={styles.favorite} >
+                     <Image source={heartOutilineIcon} />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.contact} onPress={(handleNewConnection)} >
                         <Image source={whatsappIcon} />

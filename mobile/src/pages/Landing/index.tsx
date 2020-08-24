@@ -51,7 +51,7 @@ const Landing: React.FC = () => {
               <Image source={studyIcon} />
               <Text style={styles.buttonText} >Estudar</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={()=>navigation.navigate('GiveClasses')} style={[styles.button, styles.secondary]} >
+            <TouchableOpacity onPress={()=>navigation.navigate('Profile')} style={[styles.button, styles.secondary]} >
               <Image source={giveClassesIcon} />
               <Text style={styles.buttonText} >Dar Aulas</Text>
             </TouchableOpacity>

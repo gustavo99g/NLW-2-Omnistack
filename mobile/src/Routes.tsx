@@ -8,7 +8,6 @@ import {Ionicons} from '@expo/vector-icons'
 
 
 import Landing from './pages/Landing'
-import GiveClasses from './pages/giveClasses'
 import TeacherList from './pages/TeacherList'
 import Favorites from './pages/Favorites'
 import Onboarding from './components/Onboarding'
@@ -16,7 +15,9 @@ import Login from './pages/Login'
 import Forget from './pages/Forget'
 import Register from './pages/Register'
 import AuthContext from './context/auth';
-
+import Profile from './pages/Profile';
+import logoImg from './assets/images/logo.png'
+import { Image } from 'react-native';
 
 const Stack = createStackNavigator()
 const Tabs = createBottomTabNavigator()
@@ -76,19 +77,33 @@ const Home = () =>{
 
     const {signed:isSigned} = useContext(AuthContext)
     return (
-        <Stack.Navigator screenOptions={{headerShown:false}} >
+        <Stack.Navigator screenOptions={{
+            headerRight:()=><Image source={logoImg} style={{marginRight:20,width:45,height:15}}  />,
+        
+            headerTintColor:'#fff',
+            headerTitleAlign:'center',
+                headerTitleStyle:{
+                    color:'#D4C2FF',
+                    fontSize:18,
+                    lineHeight:24
+                },
+                headerStyle:
+                {
+                    backgroundColor:'#774DD6',
+                    
+                }}} >
                 {isSigned 
                 ?
                 <>
-                    <Stack.Screen name='Landing' component={Landing} />
-                    <Stack.Screen name='GiveClasses' component={GiveClasses} /> 
-                    <Stack.Screen name='Study' component={TabsNAvigator} />
+                    <Stack.Screen name='Landing' component={Landing} options={{headerShown:false}} />
+                    <Stack.Screen name='Profile' options={{title:'Ver Perfil'}} component={Profile} /> 
+                    <Stack.Screen name='Study' component={TabsNAvigator} options={{title:'Estudar'}} />
                 </> 
                 :
                 <>
-                <Stack.Screen name='Login' component={Login} /> 
-                <Stack.Screen name='Forget' component={Forget} /> 
-                <Stack.Screen name='Register' component={Register} />
+                <Stack.Screen name='Login' component={Login} options={{headerShown:false}} /> 
+                <Stack.Screen name='Forget' component={Forget} options={{headerShown:false}} /> 
+                <Stack.Screen name='Register' component={Register} options={{headerShown:false}} />
                 </>
                 }             
         </Stack.Navigator>
