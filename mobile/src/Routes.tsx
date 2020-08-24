@@ -1,9 +1,8 @@
-import React from 'react';
+import React,{useContext} from 'react';
 
 import {NavigationContainer} from '@react-navigation/native'
 import {createStackNavigator} from '@react-navigation/stack'
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
-import {} from '@react-navigation/native'
 import {Ionicons} from '@expo/vector-icons'
 
 
@@ -16,6 +15,8 @@ import Onboarding from './components/Onboarding'
 import Login from './pages/Login'
 import Forget from './pages/Forget'
 import Register from './pages/Register'
+import AuthContext from './context/auth';
+
 
 const Stack = createStackNavigator()
 const Tabs = createBottomTabNavigator()
@@ -69,10 +70,11 @@ const TabsNAvigator = () =>{
     )
 }
 
-const isSigned = false
 const OnboardingView = false
 
 const Home = () =>{
+
+    const {signed:isSigned} = useContext(AuthContext)
     return (
         <Stack.Navigator screenOptions={{headerShown:false}} >
                 {isSigned 

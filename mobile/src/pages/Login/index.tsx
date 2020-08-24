@@ -1,15 +1,25 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import { View,Text, StyleSheet, ImageBackground, Image, CheckBox,TextInput, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Background from '../../assets/images/give-classes-background.png'
 
 import Logo from '../../assets/images/logo.png'
+import AuthContext from '../../context/auth';
 
 
 const Login: React.FC = () => {
 
     const {navigate} = useNavigation()
+    const [reminder, setReminder] = useState(false)
 
+    const {signIn} = useContext(AuthContext)
+
+    const [email,setEmail] = useState('')
+    const [password,setPassword] = useState('')
+
+    const handleSignIn = () =>{
+        signIn(email,password)
+    }
 
   return (
      
@@ -32,21 +42,31 @@ const Login: React.FC = () => {
             
             <View style={styles.inputs}>
                 
-                <TextInput style={[styles.input,styles.input1]} keyboardType='email-address'  placeholder='E-mail' />
-                <TextInput style={[styles.input, styles.input2]} secureTextEntry showSoftInputOnFocus placeholder='Senha'/>
+                <TextInput style={[styles.input,styles.input1]} 
+                keyboardType='email-address'  
+                placeholder='E-mail' 
+                autoCapitalize='none'
+                autoCorrect={false}
+                onChangeText={setEmail}
+                />
+                <TextInput style={[styles.input, styles.input2]} 
+                secureTextEntry 
+                placeholder='Senha'
+                onChangeText={setPassword}
+                />
                 
             </View>
         
             <View style={styles.reminder} >
                 <View style={styles.check} >
-                    <CheckBox />
+                    <CheckBox value={reminder} onValueChange={setReminder} />
                     <Text style={styles.reminderText} >Lembrar-me</Text>
                 </View>
                 <TouchableOpacity onPress={()=> navigate('Forget')} >
                     <Text style={styles.reminderText} >Esqueci minha senha</Text>
                 </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.button} >
+            <TouchableOpacity style={styles.button} onPress={handleSignIn}  >
                 <Text style={styles.buttonText} >Entrar</Text>
             </TouchableOpacity>
         </View>

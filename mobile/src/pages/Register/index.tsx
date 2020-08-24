@@ -3,11 +3,14 @@ import { View, Text,TouchableOpacity, StyleSheet,TextInput,KeyboardAvoidingView 
 import { Ionicons } from '@expo/vector-icons'; 
 import { useNavigation } from '@react-navigation/native';
 
+
 // import { Container } from './styles';
 
 const Register: React.FC = () => {
 
+
     const {goBack} = useNavigation()
+    
 
   return (
       <View style={styles.container} >
@@ -17,7 +20,7 @@ const Register: React.FC = () => {
           <Text style={styles.title} >Crie sua conta gratuita</Text>
           <Text style={styles.titleText} >Basta preencher esses dados e você estará conosco.</Text>
 
-          <KeyboardAvoidingView behavior="position"  >
+          <KeyboardAvoidingView behavior="position">
             <View  style={styles.inputs}>             
                 <TextInput style={[styles.input,styles.input1]}  placeholder='Nome' />
                 <TextInput style={styles.input} placeholder='Sobrenome' />
