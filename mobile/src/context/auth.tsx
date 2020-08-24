@@ -24,7 +24,7 @@ export const Auth:React.FC = ({children}) => {
     
     useEffect(()=>{
         const loadUser =async() =>{
-            const userLocal = await AsyncStorage.getItem('token:proffy')
+            const userLocal = await AsyncStorage.getItem('user:proffy')
             const Token = await AsyncStorage.getItem('token:proffy')
             if(userLocal && Token){
                 setUser(JSON.parse(userLocal))
@@ -54,9 +54,9 @@ export const Auth:React.FC = ({children}) => {
             Alert.alert('Falha ao fazer o login')
         }        
     }
-    const signOut =()=>{
-        AsyncStorage.removeItem('user:proffy')
-        AsyncStorage.removeItem('token:proffy')
+    const signOut = async()=>{
+        await AsyncStorage.removeItem('user:proffy')
+        await AsyncStorage.removeItem('token:proffy')
         setUser(null)
     }
 
