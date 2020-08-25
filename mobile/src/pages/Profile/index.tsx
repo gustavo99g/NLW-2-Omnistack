@@ -1,11 +1,29 @@
-import React, { useContext } from 'react';
-import { View, StyleSheet, Image,Text } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { View, StyleSheet, Image,Text,ScrollView, TextInput, TouchableOpacity, NativeEventEmitter } from 'react-native';
+import RNPickerSelect from 'react-native-picker-select'
+
 import AuthContext from '../../context/auth';
-import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
+
 
 const Profile: React.FC = () => {
 
+
     const {user} = useContext(AuthContext)
+    const [subject,setSubject] = useState()
+
+    const timer = [
+        {value:'08:00', label:'8 horas'},
+        {value:'09:00', label:'9 horas'},
+        {value:'10:00', label:'10 horas'},
+        {value:'11:00', label:'11 horas'},
+        {value:'12:00', label:'12 horas'},
+        {value:'13:00', label:'13 horas'},
+        {value:'14:00', label:'14 horas'},
+        {value:'15:00', label:'15 horas'},
+        {value:'16:00', label:'16 horas'},
+        {value:'17:00', label:'17 horas'},
+        {value:'18:00', label:'18 horas'},
+    ]
 
   return (
       <View style={styles.container} >
@@ -36,7 +54,15 @@ const Profile: React.FC = () => {
                 <Text style={styles.title}>Sobre a aula</Text>
                 <View style={styles.hr} />
                 <Text style={styles.label}>Materia</Text>
-                <TextInput style={styles.input} placeholder='Materia' />
+                <RNPickerSelect style={pickerSelectStyles} 
+                placeholder={{label:'Selecione'}} 
+                useNativeAndroidPickerStyle={false} 
+                onValueChange={(value) => setSubject(value)} 
+                items={[
+                    {label:'Matematica', value:'Matematica'},
+                    {label:'Portugues', value:'Portugues'},
+                ]}/>
+
                 <Text style={styles.label}>Custo da sua hora por aula</Text>
                 <TextInput style={styles.input} placeholder='Custo' />
 
@@ -48,15 +74,39 @@ const Profile: React.FC = () => {
                 </View>
                 <View style={styles.hr} />
                 <Text style={styles.label}>Dia da semana</Text>
-                <TextInput style={styles.input} placeholder='Dia da semana' />
+                <RNPickerSelect style={pickerSelectStyles} 
+                placeholder={{label:'Selecione'}} 
+                useNativeAndroidPickerStyle={false} 
+                onValueChange={(value) => setSubject(value)} 
+                items={[
+                    {label:'Segunda', value:'Segunda'},
+                    {label:'Terça', value:'Terça'},
+                ]}/>
+
                 <View style={styles.timeBlock} >
                     <View style={styles.timeBlockView} >
                     <Text style={styles.label}>Das</Text>
-                    <TextInput style={styles.input} placeholder='8horas' />
+                       
+                    <RNPickerSelect 
+                        placeholder={{label:'Selecione'}}  
+                        style={pickerSelectStyles} 
+                        items={timer} 
+                        onValueChange={()=>console.log()}
+                        useNativeAndroidPickerStyle={false} 
+                        />
+                
                     </View>
                     <View style={styles.timeBlockView}>
                     <Text style={styles.label}>Até</Text>
-                    <TextInput style={styles.input} placeholder='18horas' />
+                    
+                        <RNPickerSelect 
+                        placeholder={{label:'Selecione'}}  
+                        style={pickerSelectStyles} 
+                        items={timer} 
+                        onValueChange={()=>console.log()}
+                        useNativeAndroidPickerStyle={false} 
+                        />
+                        
                     </View>
                 </View>
                 <View style={styles.footer} >
@@ -73,6 +123,21 @@ const Profile: React.FC = () => {
   )
 }
 
+const pickerSelectStyles = StyleSheet.create({
+    inputAndroid: {
+      fontSize: 14,
+      paddingHorizontal: 10,
+      paddingVertical: 8,
+      borderWidth: 1,
+      borderColor: '#E6E6F0',
+      backgroundColor:'#FAFAFC',
+      borderRadius: 8,
+      color: 'black',
+      paddingRight: 30, 
+      marginVertical:8
+    },
+    
+  });
 
 const styles = StyleSheet.create({
     container:{
@@ -135,7 +200,7 @@ const styles = StyleSheet.create({
         borderRadius:8,
         borderWidth:1,
         borderColor:'#E6E6F0',
-        flex:1
+     
     },
     newText:{
         color:'#8257E5',
