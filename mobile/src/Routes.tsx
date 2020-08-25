@@ -96,7 +96,7 @@ const Home = () =>{
                 ?
                 <>
                     <Stack.Screen name='Landing' component={Landing} options={{headerShown:false}} />
-                    <Stack.Screen name='Profile' options={{title:'Ver Perfil'}} component={Profile} /> 
+                    <Stack.Screen name='Profile' options={{title:'Meu perfil'}} component={Profile} /> 
                     <Stack.Screen name='Study' component={TabsNAvigator} options={{title:'Estudar'}} />
                 </> 
                 :
