@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-community/async-storage'
 import heartOutilineIcon from '../../assets/images/icons/heart-outline.png'
 import unfavoriteIcon from '../../assets/images/icons/unfavorite.png'
 import whatsappIcon from '../../assets/images/icons/whatsapp.png'
+import ArrowIcon from '../../assets/images/icons/Group.png'
 import api from '../../services/api';
 
 
@@ -27,6 +28,14 @@ interface TeacherProps {
 
 const TeacherCard: React.FC<Teacher> = ({class:classProp}) => {
 
+    const days =[
+        {value:1, label:'Segunda'},
+        {value:2, label:'Terça'},
+        {value:3, label:'Quarta'},
+        {value:4, label:'Quinta'},
+        {value:5, label:'Sexta'},
+]
+
 
     const handleNewConnection =() =>{
         api.post('/connections', {user_id:classProp.id})
@@ -48,12 +57,29 @@ const TeacherCard: React.FC<Teacher> = ({class:classProp}) => {
             <Text style={styles.bio} >
                 {classProp.bio}
             </Text>
-
+            <View style={styles.hr} />
+            <View style={styles.times} >
+                <View style={styles.title} >
+                    <Text style={styles.titleText} >Dia</Text>
+                    <Text style={styles.titleText} >Horario</Text>
+                </View>
+                {days.map(day =>(
+                    <View style={styles.dayContainer} key={day.label} >
+                        <Text style={styles.dayText} >{day.label}</Text>
+                        <Image source={ArrowIcon} />
+                        <Text style={styles.dayText}>8h - 18h</Text>
+                    </View>
+                ))}
+               
+            </View>
+            
             <View style={styles.footer} >
-                <Text style={styles.price} >
-                    Preço/hora{'   '}
-                    <Text style={styles.priceValue}>R$ {classProp.cost}</Text>
-                </Text>
+                <View style={styles.priceContainer} >
+                    <Text style={styles.price} >
+                        Preço da minha hora:                 
+                    </Text>
+                    <Text style={styles.priceValue}>R$ {classProp.cost},00 reais </Text>
+                </View>
                 <View style={styles.buttonsContainer} >
                     <TouchableOpacity style={styles.favorite} >
                      <Image source={heartOutilineIcon} />
@@ -64,7 +90,7 @@ const TeacherCard: React.FC<Teacher> = ({class:classProp}) => {
                     </TouchableOpacity>
                 </View>
 
-            </View>
+                </View>
 
         </View>
   )
@@ -74,13 +100,14 @@ const styles = StyleSheet.create({
     container:{
         backgroundColor:'#fff',
         borderWidth:1,
-        borderColor:'#e6e6f0',
+        borderColor:'#E5E5E5',
         borderRadius:8,
         marginBottom:16,
         overflow:"hidden"
     },
     profile:{
         flexDirection:"row",
+        
         alignItems:"center",
         padding:24
     },
@@ -92,6 +119,50 @@ const styles = StyleSheet.create({
     },
     profileInfo:{
         marginLeft:16,
+    },
+
+    hr:{
+        borderWidth:1,
+        borderColor:'#E6E6F0',
+        marginTop:10,
+        marginBottom:18
+    },
+    times:{
+        paddingHorizontal:24,
+        paddingVertical:8,
+        borderBottomWidth:1,
+        borderColor:'#E5E5E5',
+        paddingBottom:16
+
+    },
+    title:{
+        flexDirection:"row",
+        justifyContent:"space-between",
+        paddingHorizontal:16
+    },
+    titleText:{
+        color:'#9C98A6',
+        fontSize:12,
+        lineHeight:15
+    },
+    dayContainer:{
+        marginTop:8,
+        flexDirection:"row",
+        justifyContent:"space-between",
+        alignItems:"center",
+        backgroundColor:'#FAFAFC',
+        paddingHorizontal:16,
+        paddingVertical:8,
+        borderRadius:8,
+        borderWidth:1,
+        borderColor:'#E6E6F0',
+        
+    },
+    dayText:{
+        color:'#6A6180',
+        fontSize:16,
+        lineHeight:21,
+        fontWeight:"bold"
     },
     name:{
         color:'#32244d',
@@ -111,16 +182,24 @@ const styles = StyleSheet.create({
     },
     footer:{
         backgroundColor:'#fafafc',
+   
         padding:24,
         alignItems:"center"
     },
+    priceContainer:{
+        flexDirection:"row",
+        width:'100%',
+        justifyContent:"space-between"
+    },
     price:{
         color:'#6a6180',
-        fontSize:14
+        fontSize:16,
+        justifyContent:"space-between"
     },
     priceValue:{
         color:'#8257e5',
-        fontSize:16
+        fontSize:16,
+        fontWeight:"bold"
     },
     buttonsContainer:{
         flexDirection:"row",
