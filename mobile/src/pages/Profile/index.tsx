@@ -1,16 +1,12 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { View, StyleSheet, Image,Text,ScrollView, TextInput, TouchableOpacity, NativeEventEmitter } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select'
 
 import AuthContext from '../../context/auth';
+import api from '../../services/api';
 
 
 const Profile: React.FC = () => {
-
-
-    const {user} = useContext(AuthContext)
-    const [subject,setSubject] = useState()
-
     const timer = [
         {value:'08:00', label:'8 horas'},
         {value:'09:00', label:'9 horas'},
@@ -25,12 +21,72 @@ const Profile: React.FC = () => {
         {value:'18:00', label:'18 horas'},
     ]
 
+
+   
+    const [name,setName] = useState('')
+    const [lastname,setLastname] = useState('')
+    const [avatar,setAvatar] = useState('')
+    const [email,setEmail] = useState('')
+    const [whatsapp,setWhatsapp] = useState('')
+    const [bio,setBio] = useState('')
+    const [cost,setCost] = useState('')
+    const [subject,setSubject] = useState('')
+    const [scheduleItems, setScheduleItems] = useState([
+        {week_day:1, from:'', to:''},
+      ])
+
+    const handleAddSchedule = () =>{
+    setScheduleItems([...scheduleItems, {
+      week_day:1,
+      from:'',
+      to:''
+        }])
+    }   
+
+    useEffect(()=>{
+        async function loadData(){
+            const res = await api.get('/users')
+            const {subject,name,lastName,avatar,cost,email,whatsapp,bio} = res.data.user[0]
+            setSubject(subject)
+            setName(name)
+            setLastname(lastName)
+            setAvatar(avatar)
+            setCost(cost.toString())
+            setEmail(email)
+            setBio(bio)
+            setWhatsapp(whatsapp)
+
+        }
+        loadData()
+    },[])
+
+    const handleScheduleItemValue = (position:number, field:string, value:string) =>{
+        const newArray = scheduleItems.map((schedule, index)=>{
+          if (index === position){
+            return {
+              ...schedule, 
+              [field]:value
+            }
+          }
+          return schedule
+        } )
+    
+        setScheduleItems(newArray)
+    
+      }
+    const handleDeleteSchedule =(index:number) =>{
+        const newArray = [...scheduleItems]
+        newArray.splice(index,1)
+        setScheduleItems(newArray)
+      }
+    
+
   return (
       <View style={styles.container} >
           <View style={styles.header} >
-                <Image source={{uri:user?.avatar}} style={styles.image} />
-                <Text style={styles.nameText} >{user?.name}</Text>
-                <Text style={styles.subjectText} >Matematica</Text>
+                <Image source={{uri:avatar ||'' }} style={styles.image} />
+                <Text style={styles.nameText} >{name +' '+lastname}</Text>
+                <Text style={styles.subjectText} >{subject}</Text>
           </View>
           <ScrollView style={styles.bottom} contentContainerStyle={{paddingBottom:16}} >
             <View style={styles.form} >
@@ -38,17 +94,17 @@ const Profile: React.FC = () => {
                 <View style={styles.hr} />
 
                 <Text style={styles.label}>Nome</Text>
-                <TextInput style={styles.input} placeholder='Nome' />
+                <TextInput style={styles.input} placeholder='Nome' value={name} onChangeText={setName} />
                 <Text style={styles.label}>Sobrenome</Text>
-                <TextInput style={styles.input} placeholder='Sobrenome' />
+                <TextInput style={styles.input} placeholder='Sobrenome' value={lastname} onChangeText={setLastname}/>
                 <Text style={styles.label}>Email</Text>
-                <TextInput style={styles.input} placeholder='E-mail' />
+                <TextInput style={styles.input} placeholder='E-mail' value={email} onChangeText={setEmail}/>
                 <Text style={styles.label}>Avatar</Text>
-                <TextInput style={styles.input} placeholder='Avatar' />
+                <TextInput style={styles.input} placeholder='Avatar' value={avatar} onChangeText={setAvatar}/>
                 <Text style={styles.label}>Whatsapp</Text>
-                <TextInput style={styles.input} placeholder='Whatsapp' />
+                <TextInput style={styles.input} placeholder='Whatsapp'value={whatsapp} onChangeText={setWhatsapp} />
                 <Text style={styles.label}>Bio</Text>
-                <TextInput style={styles.input}multiline={true} numberOfLines={5} placeholder='Bio' />
+                <TextInput style={styles.input}multiline={true} numberOfLines={5} placeholder='Bio'value={bio} onChangeText={setBio} />
                 
                 
                 <Text style={styles.title}>Sobre a aula</Text>
@@ -58,65 +114,90 @@ const Profile: React.FC = () => {
                 placeholder={{label:'Selecione'}} 
                 useNativeAndroidPickerStyle={false} 
                 onValueChange={(value) => setSubject(value)} 
+                value={subject}
                 items={[
-                    {label:'Matematica', value:'Matematica'},
-                    {label:'Portugues', value:'Portugues'},
+                    {value:'Artes', label:'Artes'},
+                    {value:'Biologia', label:'Biologia'},
+                    {value:'Matematica', label:'Matematica'},
+                    {value:'Ciencias', label:'Ciencias'},
+                    {value:'Fisica', label:'Fisica'},
+                    {value:'Quimica', label:'Quimica'},
+                    {value:'Portugues', label:'Portugues'},
+                    {value:'Educação fisica', label:'Educação fisica'},
+                    {value:'Geografia', label:'Geografia'},
+                    {value:'Historia', label:'Historia'},
                 ]}/>
 
                 <Text style={styles.label}>Custo da sua hora por aula</Text>
-                <TextInput style={styles.input} placeholder='Custo' />
+                <TextInput style={styles.input} placeholder='Custo' value={cost} onChangeText={setCost}/>
 
                 <View style={styles.times} >
                     <Text style={styles.title} >Horários disponiveis</Text>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={handleAddSchedule} >
                         <Text style={styles.newText} >+ Novo</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.hr} />
-                <Text style={styles.label}>Dia da semana</Text>
-                <RNPickerSelect style={pickerSelectStyles} 
-                placeholder={{label:'Selecione'}} 
-                useNativeAndroidPickerStyle={false} 
-                onValueChange={(value) => setSubject(value)} 
-                items={[
-                    {label:'Segunda', value:'Segunda'},
-                    {label:'Terça', value:'Terça'},
-                ]}/>
-
-                <View style={styles.timeBlock} >
-                    <View style={styles.timeBlockView} >
-                    <Text style={styles.label}>Das</Text>
+                {scheduleItems.map((schedule,index)=>(
+                    <View key={index} >
                        
-                    <RNPickerSelect 
-                        placeholder={{label:'Selecione'}}  
-                        style={pickerSelectStyles} 
-                        items={timer} 
-                        onValueChange={()=>console.log()}
+                        <Text style={styles.label}>Dia da semana</Text>
+                        <RNPickerSelect style={pickerSelectStyles} 
+                        placeholder={{label:'Selecione'}} 
                         useNativeAndroidPickerStyle={false} 
-                        />
-                
-                    </View>
-                    <View style={styles.timeBlockView}>
-                    <Text style={styles.label}>Até</Text>
-                    
-                        <RNPickerSelect 
-                        placeholder={{label:'Selecione'}}  
-                        style={pickerSelectStyles} 
-                        items={timer} 
-                        onValueChange={()=>console.log()}
-                        useNativeAndroidPickerStyle={false} 
-                        />
-                        
-                    </View>
-                </View>
-                <View style={styles.footer} >
-                    <View style={[styles.hr,{width:'30%'}]} />
-                        <TouchableOpacity  >
-                            <Text style={styles.buttonText} >Excluir horario</Text>
-                        </TouchableOpacity>
-                    <View style={[styles.hr,{width:'30%'}]} />
-                </View>
+                        value={schedule.week_day}
+                        onValueChange={(e)=>handleScheduleItemValue(index, 'week_day',e)} 
+                        items={[
+                            {label:'Segunda', value:'1'},
+                            {label:'Terça', value:'2'},
+                            {label:'Quarta', value:'3'},
+                            {label:'Quinta', value:'4'},
+                            {label:'Sexta', value:'5'},
+                        ]}/>
 
+                        <View style={styles.timeBlock} >
+                            <View style={styles.timeBlockView} >
+                            <Text style={styles.label}>Das</Text>
+                            
+                            <RNPickerSelect 
+                                placeholder={{label:'Selecione'}}  
+                                style={pickerSelectStyles} 
+                                items={timer} 
+                                value={schedule.from}
+                                onValueChange={(e)=>handleScheduleItemValue(index, 'from',e)}
+                                useNativeAndroidPickerStyle={false} 
+                                />
+                        
+                            </View>
+                            <View style={styles.timeBlockView}>
+                            <Text style={styles.label}>Até</Text>
+                            
+                                <RNPickerSelect 
+                                placeholder={{label:'Selecione'}}  
+                                style={pickerSelectStyles} 
+                                items={timer} 
+                                value={schedule.to}
+                                onValueChange={(e)=>handleScheduleItemValue(index, 'to',e)}
+                                useNativeAndroidPickerStyle={false} 
+                                />
+                                
+                            </View>
+                        </View>
+                        <View style={styles.footer} >
+                            <View style={[styles.hr,{width:'30%'}]} />
+                                <TouchableOpacity onPress={()=>handleDeleteSchedule(index)} >
+                                    <Text style={styles.buttonText} >Excluir horario</Text>
+                                </TouchableOpacity>
+                            <View style={[styles.hr,{width:'30%'}]} />
+                        </View>
+                    </View>
+                ))}
+                
+            </View>
+            <View style={styles.buttonContainer} >
+                <TouchableOpacity style={styles.button} >
+                    <Text style={styles.buttonTextSave} >Salvar alterações</Text>
+                </TouchableOpacity>
             </View>
           </ScrollView>
       </View>
@@ -141,7 +222,9 @@ const pickerSelectStyles = StyleSheet.create({
 
 const styles = StyleSheet.create({
     container:{
-        flex:1
+        flex:1,
+        paddingBottom:16,
+        backgroundColor:'#E5E5E5'
     },
     header:{
         flexDirection:'column',
@@ -171,11 +254,11 @@ const styles = StyleSheet.create({
     bottom:{
         padding:16,
         marginTop:-40,
-    
+        borderRadius:8,
     },
     form:{
         backgroundColor:'#fff',       
-        borderRadius:8,
+        
         padding:20,
         borderWidth:1,
         borderColor:'#e6e6f0',
@@ -235,6 +318,26 @@ const styles = StyleSheet.create({
         fontWeight:"bold",
      
     },
+    buttonContainer:{
+        borderBottomLeftRadius:8,
+        borderBottomRightRadius:8,
+        padding:20,
+        backgroundColor:'#FAFAFC',
+        borderWidth:1,
+        borderColor:'#e6e6f0',
+    },
+    button:{
+        justifyContent:"center",
+        alignItems:"center",
+        backgroundColor:'#04D361',
+        paddingVertical:16,
+        borderRadius:8,
+    },
+    buttonTextSave:{
+        color:'#fff',
+        fontSize:16,
+        lineHeight:26
+    }
   
 })
 
