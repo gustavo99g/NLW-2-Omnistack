@@ -11,4 +11,4 @@ Projeto desenvolvido na Next level week da rocketseat utilizando NodeJs, ReactJs
 
 # Link para layouts:
 <a href='https://www.figma.com/file/Agvethfp7FANyXDDU3LUfd/Proffy-Web-2.0'  target='_blank'>Web </a>
-<a href='https://www.figma.com/file/e33KvgUpFdunXxJjHnK7CG/Proffy-Mobile' target='_blank'> Mobile </a>
+<a href='https://www.figma.com/file/txLoispZCXMeKWlNEcmxjY/Proffy-Mobile-2.0-(Copy)' target='_blank'> Mobile </a>
