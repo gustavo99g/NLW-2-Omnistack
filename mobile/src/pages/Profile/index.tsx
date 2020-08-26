@@ -1,12 +1,21 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { View, StyleSheet, Image,Text,ScrollView, TextInput, TouchableOpacity, NativeEventEmitter } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, Image,Text,ScrollView, TextInput, TouchableOpacity, NativeEventEmitter, Alert } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select'
 
-import AuthContext from '../../context/auth';
 import api from '../../services/api';
+import converTotime from '../../utils/convertTime';
+import { useNavigation } from '@react-navigation/native';
 
+interface scheProps {
+    week_day:number
+    from:string
+    to:string
+  }
 
 const Profile: React.FC = () => {
+
+    const {navigate} = useNavigation()
+
     const timer = [
         {value:'08:00', label:'8 horas'},
         {value:'09:00', label:'9 horas'},
@@ -24,7 +33,7 @@ const Profile: React.FC = () => {
 
    
     const [name,setName] = useState('')
-    const [lastname,setLastname] = useState('')
+    const [lastName,setLastname] = useState('')
     const [avatar,setAvatar] = useState('')
     const [email,setEmail] = useState('')
     const [whatsapp,setWhatsapp] = useState('')
@@ -55,10 +64,44 @@ const Profile: React.FC = () => {
             setEmail(email)
             setBio(bio)
             setWhatsapp(whatsapp)
-
-        }
+            const newSchedule = res.data.schedule.map((sche:scheProps) =>{
+                const to = converTotime(sche.to)
+                const from = converTotime(sche.from)
+                return {
+                  ...sche,
+                  to,
+                  from
+                }
+                
+              })
+              setScheduleItems(newSchedule)
+        }      
         loadData()
     },[])
+
+    const handleSubmitData = async() =>{
+        const data ={
+            name,
+            lastName,
+            avatar,
+            cost,
+            email,
+            bio,
+            whatsapp,
+            subject,
+            schedule:scheduleItems
+        }
+
+        try{
+            await api.put('/users', data)
+            Alert.alert('Dados salvos com sucesso','Clique em ok para voltar a home',[{onPress:()=>navigate('Landing')}])
+            
+            
+          }catch(err){
+            alert('Falha ao salvar os dados, tente novamente mais tarde')
+          }
+    }
+    
 
     const handleScheduleItemValue = (position:number, field:string, value:string) =>{
         const newArray = scheduleItems.map((schedule, index)=>{
@@ -84,8 +127,8 @@ const Profile: React.FC = () => {
   return (
       <View style={styles.container} >
           <View style={styles.header} >
-                <Image source={{uri:avatar ||'' }} style={styles.image} />
-                <Text style={styles.nameText} >{name +' '+lastname}</Text>
+                <Image source={{uri:avatar ||'tes' }} style={styles.image} />
+                <Text style={styles.nameText} >{name +' '+lastName}</Text>
                 <Text style={styles.subjectText} >{subject}</Text>
           </View>
           <ScrollView style={styles.bottom} contentContainerStyle={{paddingBottom:16}} >
@@ -96,7 +139,7 @@ const Profile: React.FC = () => {
                 <Text style={styles.label}>Nome</Text>
                 <TextInput style={styles.input} placeholder='Nome' value={name} onChangeText={setName} />
                 <Text style={styles.label}>Sobrenome</Text>
-                <TextInput style={styles.input} placeholder='Sobrenome' value={lastname} onChangeText={setLastname}/>
+                <TextInput style={styles.input} placeholder='Sobrenome' value={lastName} onChangeText={setLastname}/>
                 <Text style={styles.label}>Email</Text>
                 <TextInput style={styles.input} placeholder='E-mail' value={email} onChangeText={setEmail}/>
                 <Text style={styles.label}>Avatar</Text>
@@ -148,12 +191,14 @@ const Profile: React.FC = () => {
                         value={schedule.week_day}
                         onValueChange={(e)=>handleScheduleItemValue(index, 'week_day',e)} 
                         items={[
-                            {label:'Segunda', value:'1'},
-                            {label:'Terça', value:'2'},
-                            {label:'Quarta', value:'3'},
-                            {label:'Quinta', value:'4'},
-                            {label:'Sexta', value:'5'},
-                        ]}/>
+                            {value:1,label:'Segunda' },
+                            {value:2,label:'Terça'},
+                            {value:3,label:'Quarta' },
+                            {value:4,label:'Quinta' },
+                            {value:5,label:'Sexta'},
+                        ]}
+                        
+                        />
 
                         <View style={styles.timeBlock} >
                             <View style={styles.timeBlockView} >
@@ -195,7 +240,7 @@ const Profile: React.FC = () => {
                 
             </View>
             <View style={styles.buttonContainer} >
-                <TouchableOpacity style={styles.button} >
+                <TouchableOpacity style={styles.button} onPress={handleSubmitData} >
                     <Text style={styles.buttonTextSave} >Salvar alterações</Text>
                 </TouchableOpacity>
             </View>
