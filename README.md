@@ -12,7 +12,7 @@ Projeto baseado na NLW da rocketseat porem com algumas funcionalidades novas, ut
 <p>-Proffys favoritos salvos no banco de dados </p>
 <p>-Na listagem de proffys agora aparece os horarios disponiveis de cada professor </p>
 <p>-Retirado filtro de proffys obrigatorio </p>
-
+<p>-Adciona telas do onboarding e SlashScreen </p>
 
 # Link para layouts:
 <a href='https://www.figma.com/file/Agvethfp7FANyXDDU3LUfd/Proffy-Web-2.0'  target='_blank'>Web </a>
