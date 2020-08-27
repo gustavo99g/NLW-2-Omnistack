@@ -1,11 +1,13 @@
-import React,{useContext} from 'react';
+import React,{useContext, useState, useEffect} from 'react';
 
 import {NavigationContainer} from '@react-navigation/native'
 import {createStackNavigator} from '@react-navigation/stack'
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 import {Ionicons} from '@expo/vector-icons'
+import * as SplashScreen from 'expo-splash-screen';
 
 
+import AsyncStorage from '@react-native-community/async-storage';
 
 import Landing from './pages/Landing'
 import TeacherList from './pages/TeacherList'
@@ -18,6 +20,7 @@ import AuthContext from './context/auth';
 import Profile from './pages/Profile';
 import logoImg from './assets/images/logo.png'
 import { Image } from 'react-native';
+
 
 const Stack = createStackNavigator()
 const Tabs = createBottomTabNavigator()
@@ -71,7 +74,7 @@ const TabsNAvigator = () =>{
     )
 }
 
-const OnboardingView = false
+
 
 const Home = () =>{
 
@@ -110,15 +113,34 @@ const Home = () =>{
     )
 }
 
-const Routes: React.FC = () => {
+const Routes:React.FC = () => {
+    const [OnboardingView, setOnboardingView] = useState<boolean>()
 
+    useEffect(()=>{
+        async function getOnboarding(){
+            await SplashScreen.preventAutoHideAsync()
+            const onboarded = await AsyncStorage.getItem('onboarding:proffy')
+            setOnboardingView(!!onboarded)
+            await SplashScreen.hideAsync();
+        }
+        getOnboarding()
+    },[])
+
+  
     return(
         <NavigationContainer>
-            <Stack.Navigator screenOptions={{headerShown:false}} >
-               
-                <Stack.Screen name='Onboarding' component={Onboarding} />
-                <Stack.Screen name='Home' component={Home} />
-               
+            <Stack.Navigator screenOptions={{headerShown:false}}>
+            {
+                OnboardingView 
+                ?
+                <Stack.Screen name='Home' component={Home} /> 
+                :
+                <>
+                <Stack.Screen name='Onboarding' component={Onboarding} />  
+                <Stack.Screen name='Home' component={Home} /> 
+                </>
+            }
+                        
             </Stack.Navigator>
         </NavigationContainer>
     )

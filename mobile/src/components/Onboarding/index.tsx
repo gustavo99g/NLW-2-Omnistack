@@ -1,7 +1,8 @@
 import React from 'react';
-import { View,Image,StyleSheet,ImageBackground,TouchableOpacity, Alert } from 'react-native';
+import { View,Image,StyleSheet,ImageBackground,TouchableOpacity } from 'react-native';
 import OnboardingScreen from 'react-native-onboarding-swiper'
 import {useNavigation} from '@react-navigation/native'
+import AsyncStorage from '@react-native-community/async-storage'
 
 import background from '../../assets/images/Background.png'
 import giveClassesIcon from '../../assets/images/icons/give-classes.png'
@@ -25,7 +26,8 @@ const Onboarding: React.FC = () => {
     }
 
 
-    const handleDone = () =>{
+    const handleDone = async() =>{
+        await AsyncStorage.setItem('onboarding:proffy','true')
         navigation.navigate('Home')
     }
 
