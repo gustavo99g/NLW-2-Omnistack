@@ -68,12 +68,16 @@ const TeacherList: React.FC = () => {
         <Header 
         title='Proffys disponiveis' 
         headerRight={(
-          <Text>{teachers.length} Proffys</Text>
+          <Text style={styles.headerText} >{teachers.length} Proffys</Text>
         )} >
-          <TouchableOpacity onPress={()=>setFilterVisible(!filterVisible)} >
-            <Feather name='filter' size={24} color='#04D361' />
-          </TouchableOpacity>
+            <TouchableOpacity style={styles.filters} onPress={()=>setFilterVisible(!filterVisible)} >
+              <Feather name='filter' size={24} color='#04D361' />
+              <Text style={styles.filterText} >Filtre por materia, dia e hora</Text>
+            </TouchableOpacity>
+            
+         
           {filterVisible &&<View style={styles.searchForm} >
+          <Text style={styles.label} >Materia</Text>
           <RNPickerSelect style={pickerSelectStyles} 
                 placeholder={{label:'Selecione'}} 
                 useNativeAndroidPickerStyle={false} 
@@ -161,8 +165,23 @@ const styles = StyleSheet.create({
     marginTop:-40,
     padding:16
   },
+  headerText:{
+    color:'#D4C2FF',
+    
+  },
   searchForm:{
     marginBottom:8
+  },
+  filters:{
+    flexDirection:"row",
+    alignItems:"center",
+    paddingVertical:16
+  },
+  filterText:{
+    marginLeft:18,
+    fontSize:18,
+    lineHeight:19,
+    color:'#D4C2FF'
   },
   label:{
     color:'#d4c2ff',

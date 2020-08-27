@@ -1,15 +1,40 @@
 import React, { useState } from 'react';
-import { View, Text,TouchableOpacity, StyleSheet,TextInput,KeyboardAvoidingView } from 'react-native';
+import { View, Text,TouchableOpacity, StyleSheet,TextInput,KeyboardAvoidingView, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; 
 import { useNavigation } from '@react-navigation/native';
+import api from '../../services/api';
 
 
 // import { Container } from './styles';
 
 const Register: React.FC = () => {
 
-
     const {goBack} = useNavigation()
+    const [name,setName] = useState('')
+    const [lastName,setLastname] = useState('')
+    const [email,setEmail] = useState('')
+    const [password,setPassword] = useState('')
+    const {navigate} = useNavigation()
+
+    const handleSubmit =async() =>{
+        const data ={
+            name,
+            lastName,
+            email,
+            password
+        }
+
+        try{
+            await api.post('/users', data)
+            Alert.alert('Dados salvos com sucesso','Clique em ok para voltar ao login',[{onPress:()=>navigate('Login')}])
+            
+            
+        }catch(err){
+            Alert.alert('Falha ao cadastrar os dados, tente novamente mais tarde')
+        }
+    }
+
+
     
 
   return (
@@ -22,14 +47,14 @@ const Register: React.FC = () => {
 
           <KeyboardAvoidingView behavior="position">
             <View  style={styles.inputs}>             
-                <TextInput style={[styles.input,styles.input1]}  placeholder='Nome' />
-                <TextInput style={styles.input} placeholder='Sobrenome' />
-                <TextInput style={styles.input} keyboardType='email-address' placeholder='E-mail' />
-                <TextInput style={[styles.input, styles.input2]} placeholder='Senha' secureTextEntry />
+                <TextInput style={[styles.input,styles.input1]} onChangeText={setName} placeholder='Nome' />
+                <TextInput style={styles.input} placeholder='Sobrenome' onChangeText={setLastname} />
+                <TextInput style={styles.input} keyboardType='email-address' onChangeText={setEmail} autoCapitalize='none' autoCorrect={false} placeholder='E-mail' />
+                <TextInput style={[styles.input, styles.input2]} onChangeText={setPassword} placeholder='Senha' secureTextEntry />
                 
             </View>
             
-                <TouchableOpacity style={styles.button} >
+                <TouchableOpacity style={styles.button} onPress={handleSubmit} >
                     <Text style={styles.buttonText} >Registrar</Text>
                 </TouchableOpacity>
             </KeyboardAvoidingView>

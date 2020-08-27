@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { View,StyleSheet,ScrollView } from 'react-native';
+import { View,StyleSheet,ScrollView,Text } from 'react-native';
 import Header from '../../components/Header';
 import TeacherCard,{Teacher} from '../../components/TeacherCard';
 import api from '../../services/api';
@@ -25,7 +25,11 @@ const Favorites: React.FC = () => {
 
   return (
     <View style={styles.container} >
-      <Header title='Meus proffys favoritos' />
+      <Header title='Meus proffys favoritos' 
+      headerRight={(
+        <Text style={styles.headerText} >{favorites.length} Proffys</Text>
+      )}
+      />
       <ScrollView style={styles.teacherList} contentContainerStyle={{paddingBottom:16}} >
           {favorites.map((favorite:Teacher) => <TeacherCard 
           key={favorite.class.id} 
@@ -48,7 +52,11 @@ const styles = StyleSheet.create({
   teacherList:{
     marginTop:-40,
     padding:16,
-  }
+  },
+  headerText:{
+    color:'#D4C2FF',
+    
+  },
 })
 
 export default Favorites;
