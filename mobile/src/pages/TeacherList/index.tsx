@@ -115,7 +115,7 @@ const TeacherList: React.FC = () => {
           </View>}
         </Header>
       <ScrollView style={styles.teacherList} contentContainerStyle={{paddingBottom:16}} >
-        {teachers.map((teacher:Teacher)=><TeacherCard key={teacher.class.id} class={teacher.class}/>)}
+        {teachers.map((teacher:Teacher)=><TeacherCard key={teacher.class.id} schedule={teacher.schedule} class={teacher.class}/>)}
         
       
       

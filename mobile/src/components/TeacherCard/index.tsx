@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { View,Text,StyleSheet,Image,TouchableOpacity,Linking } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage'
+import styled from 'styled-components/native';
+
+
 
 import heartOutilineIcon from '../../assets/images/icons/heart-outline.png'
 import unfavoriteIcon from '../../assets/images/icons/unfavorite.png'
@@ -11,6 +14,13 @@ import api from '../../services/api';
 
 export interface Teacher {
     class:TeacherProps
+    schedule:Array<scheduleProps>
+}
+
+interface scheduleProps{
+  week_day:number
+  from:number
+  to:number
 }
 
 interface TeacherProps {
@@ -23,10 +33,12 @@ interface TeacherProps {
     whatsapp:string
  
 }
+interface ViewProps {
+    opacity:boolean
+}
 
 
-
-const TeacherCard: React.FC<Teacher> = ({class:classProp}) => {
+const TeacherCard: React.FC<Teacher> = ({class:classProp,schedule}) => {
 
     const days =[
         {value:1, label:'Segunda'},
@@ -35,7 +47,6 @@ const TeacherCard: React.FC<Teacher> = ({class:classProp}) => {
         {value:4, label:'Quinta'},
         {value:5, label:'Sexta'},
 ]
-
 
     const handleNewConnection =() =>{
         api.post('/connections', {user_id:classProp.id})
@@ -64,11 +75,11 @@ const TeacherCard: React.FC<Teacher> = ({class:classProp}) => {
                     <Text style={styles.titleText} >Horario</Text>
                 </View>
                 {days.map(day =>(
-                    <View style={styles.dayContainer} key={day.label} >
+                    <DayContainer key={day.label} opacity={schedule.some(sche=>sche.week_day === day.value)}>
                         <Text style={styles.dayText} >{day.label}</Text>
                         <Image source={ArrowIcon} />
-                        <Text style={styles.dayText}>8h - 18h</Text>
-                    </View>
+                    <Text style={styles.dayText}>{schedule.map(sche => day.value === sche.week_day ? `${sche.from/60}h - ${sche.to/60}h`: '')}</Text>
+                    </DayContainer>
                 ))}
                
             </View>
@@ -95,6 +106,18 @@ const TeacherCard: React.FC<Teacher> = ({class:classProp}) => {
         </View>
   )
 }
+
+const DayContainer = styled.View<ViewProps>`
+        margin-top:8px;
+        flex-direction:row;
+        justify-content:space-between;
+        align-items:center;
+        background-color:#FAFAFC;
+        padding:8px 16px;
+        border-radius:8px;
+        border:1px solid #e6e6f0;
+        opacity:${props=>props.opacity ? 1 :0.5}
+`
 
 const styles = StyleSheet.create({
     container:{
@@ -145,19 +168,7 @@ const styles = StyleSheet.create({
         fontSize:12,
         lineHeight:15
     },
-    dayContainer:{
-        marginTop:8,
-        flexDirection:"row",
-        justifyContent:"space-between",
-        alignItems:"center",
-        backgroundColor:'#FAFAFC',
-        paddingHorizontal:16,
-        paddingVertical:8,
-        borderRadius:8,
-        borderWidth:1,
-        borderColor:'#E6E6F0',
-        
-    },
+    
     dayText:{
         color:'#6A6180',
         fontSize:16,
