@@ -28,16 +28,18 @@ const TeacherList: React.FC = () => {
 
   const [filterVisible, setFilterVisible] = useState(false)
   const [teachers, setTeachers] = useState([])
-  const [favorites, setFavorites] = useState<number[]>([])
+  const [refresh, setRefresh] = useState(false)
 
   const [subject,setSubject] = useState('')
   const [week_day,setWeek_day] = useState('')
   const [time,setTime] = useState('')
+  const [favorites, setFavorites] = useState([])
 
 
   useEffect(()=>{
     getProffys()
-  },[])
+    
+  },[refresh])
 
 
   const getProffys = async() =>{
@@ -48,7 +50,13 @@ const TeacherList: React.FC = () => {
         time
     }})
     setTeachers(res.data)
+  
     setFilterVisible(false)
+
+    const res2 = await api.get('/favorites')
+    setFavorites(res2.data)
+ 
+      
   }
 
   
@@ -115,7 +123,15 @@ const TeacherList: React.FC = () => {
           </View>}
         </Header>
       <ScrollView style={styles.teacherList} contentContainerStyle={{paddingBottom:16}} >
-        {teachers.map((teacher:Teacher)=><TeacherCard key={teacher.class.id} schedule={teacher.schedule} class={teacher.class}/>)}
+        {teachers.map((teacher:Teacher)=>(
+          <TeacherCard 
+          key={teacher.class.id} 
+          refreshFunc={()=>setRefresh(!refresh)} 
+          schedule={teacher.schedule} 
+          class={teacher.class}
+          favorite={favorites.some((favorite:Teacher) => favorite.class.id == teacher.class.id)}
+          />
+        ))}
         
       
       

@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { View,Text,StyleSheet,Image,TouchableOpacity,Linking } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage'
 import styled from 'styled-components/native';
-
 
 
 import heartOutilineIcon from '../../assets/images/icons/heart-outline.png'
@@ -15,6 +13,8 @@ import api from '../../services/api';
 export interface Teacher {
     class:TeacherProps
     schedule:Array<scheduleProps>
+    favorite?:boolean
+    refreshFunc():void
 }
 
 interface scheduleProps{
@@ -38,7 +38,8 @@ interface ViewProps {
 }
 
 
-const TeacherCard: React.FC<Teacher> = ({class:classProp,schedule}) => {
+const TeacherCard: React.FC<Teacher> = ({class:classProp,schedule,favorite,refreshFunc}) => {
+    console.log(favorite)
 
     const days =[
         {value:1, label:'Segunda'},
@@ -47,11 +48,18 @@ const TeacherCard: React.FC<Teacher> = ({class:classProp,schedule}) => {
         {value:4, label:'Quinta'},
         {value:5, label:'Sexta'},
 ]
+    const [itemFavorited, setFavorited] = useState(favorite)
 
     const handleNewConnection =() =>{
         api.post('/connections', {user_id:classProp.id})
         Linking.openURL(`whatsapp://send?phone=${classProp.whatsapp}`)
       }
+
+    const handleFavorite =async (proffy_id:number)=>{
+        await api.post('/favorites',{proffy_id})
+        setFavorited(!itemFavorited)
+        refreshFunc()
+    }
 
   return (
       <View style={styles.container}>
@@ -92,9 +100,18 @@ const TeacherCard: React.FC<Teacher> = ({class:classProp,schedule}) => {
                     <Text style={styles.priceValue}>R$ {classProp.cost},00 reais </Text>
                 </View>
                 <View style={styles.buttonsContainer} >
-                    <TouchableOpacity style={styles.favorite} >
+                    {itemFavorited
+                    ?
+                    <TouchableOpacity style={[styles.favorite,styles.favorited]} onPress={()=>handleFavorite(classProp.id)} >
+                     <Image source={unfavoriteIcon} />
+                    </TouchableOpacity>
+                    :
+                    <TouchableOpacity style={styles.favorite} onPress={()=>handleFavorite(classProp.id)} >
                      <Image source={heartOutilineIcon} />
                     </TouchableOpacity>
+                    
+                    
+                    }
                     <TouchableOpacity style={styles.contact} onPress={(handleNewConnection)} >
                         <Image source={whatsappIcon} />
                         <Text style={styles.contactText} >Entrar em contato</Text>
