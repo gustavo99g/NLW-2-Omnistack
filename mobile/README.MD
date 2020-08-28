@@ -14,4 +14,4 @@ Todas as telas do mobile
 <img src='../.github/filtersMobile.png' width='24%' />
 </p>
 
-<img src='.github/ListMobile.png' width='25%' />
+<img src='../.github/ListMobile.png' width='25%' />
