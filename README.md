@@ -4,6 +4,8 @@ Projeto baseado na NLW da rocketseat porem com algumas funcionalidades novas, ut
 <img src='.github/login.png' width='70%' />
 <img src='.github/loginMobile.png' />
 </p>
+<a href='https://github.com/gustavo99g/Proffy-2.0-NLW-2/tree/master/web'  target='_blank'>Ver toda as telas web </a>
+<a href='https://github.com/gustavo99g/Proffy-2.0-NLW-2/tree/master/mobile'  target='_blank'>Ver todas as telas do mobile </a>
 
 # Funcionalidades adcionadas
 <p>-Toda parte de autenticação e rotas protegidas </p>
